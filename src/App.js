@@ -38,7 +38,7 @@ import Suppliers from "./components/Suppliers";
 import AddSupplier from "./components/AddSupplier";
 import IpSettings from "./components/IpSettings";
 
-import connectionData from './connection.json'
+//import connectionData from './connection.json'
 import SupplierList from "./components/SupplierList";
 import InventoryLanding from "./components/InventoryLanding";
 import InventoryFilter from "./components/InventoryFilter";
@@ -58,7 +58,7 @@ function App() {
 
   global.ipa = 'localhost'
 
-  const   newCon = connectionData;
+  //const   newCon = connectionData;
 
 
   const [connection, setConnection] = useState('');

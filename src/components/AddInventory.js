@@ -3,8 +3,8 @@ import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import axios from "axios";
 import Toast1 from "./Toast1";
 import Toast2 from "./Toast2";
-import async from "async";
-import * as Console from "console";
+//import async from "async";
+
 
 
 class AddInventory extends React.Component{

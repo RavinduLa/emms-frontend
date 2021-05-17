@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import Toast1 from "./Toast1";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { AlertWrapper } from 'react-alerts-plus';
+//import { AlertWrapper } from 'react-alerts-plus';
 import Modal from "react-modal";
 import MyModal from "./Modals/MyModal";
 

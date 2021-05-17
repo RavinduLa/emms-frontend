@@ -45,7 +45,7 @@ class InventoryFilter2 extends React.Component{
         }
         return (
             <div>
-                <div style={paddingLeft,padding}>
+                <div style={padding}>
                     <Row>
                         <Col>
                     <Form onReset={this.resetInventoryFilter.bind(this)} onSubmit={this.submitFilter.bind(this)}>
