@@ -1,6 +1,6 @@
 //import logo from './logo.svg';
 import './App.css';
-import NavigationBar from './components/NavigationBar';
+import NavigationBar from './components/Navbar/NavigationBar';
 
 import React, { useState, useEffect } from 'react';
 
@@ -9,46 +9,46 @@ import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
 
 //import {Container, Row, Jumbotron, Col} from 'react-bootstrap';
 import Welcome from "./components/Welcome";
-import Footer from "./components/Footer";
-import Inventory from "./components/Inventory";
-import Header from "./components/Header";
-import AddInventory from "./components/AddInventory";
-import SingleEquipment from "./components/SingleEquipment";
+import Footer from "./components/Common/Footer";
+import Inventory from "./components/Inventory/Inventory";
+import Header from "./components/Common/Header";
+import AddInventory from "./components/Inventory/AddInventory";
+import SingleEquipment from "./components/Inventory/SingleEquipment";
 import Maintenance from "./components/Maintenance";
-import AddJob from "./components/AddJob";
+import AddJob from "./components/Inventory/AddJob";
 import Dashboard from "./components/Dashboard";
-import EditEquipment from "./components/EditEquipment";
-import Departments from "./components/Departments";
-import AddDepartment from "./components/AddDepartment";
+import EditEquipment from "./components/Inventory/EditEquipment";
+import Departments from "./components/Inventory/Departments";
+import AddDepartment from "./components/Inventory/AddDepartment";
 import TestForm from "./components/TestForm";
 import Admin from "./components/Admin";
-import EquipmentConfiguration from "./components/EquipmentConfiguration";
-import EquipmentCategories from "./components/EquipmentCategories";
-import EquipmentCategoryList from "./components/EquipmentCategoryList";
-import AddEquipmentCategory from "./components/AddEquipmentCategory";
-import Brands from "./components/Brands";
-import AddBrand from "./components/AddBrand";
-import BrandList from "./components/BrandList";
-import BrandsFull from "./components/BrandsFull";
-import AddModels from "./components/AddModels";
-import ModelList from "./components/ModelList";
-import AddBrandsToCategories from "./components/AddBrandsToCategories";
+import EquipmentConfiguration from "./components/Inventory/EquipmentConfiguration";
+import EquipmentCategories from "./components/Inventory/EquipmentCategories";
+import EquipmentCategoryList from "./components/Inventory/EquipmentCategoryList";
+import AddEquipmentCategory from "./components/Inventory/AddEquipmentCategory";
+import Brands from "./components/Inventory/Brands";
+import AddBrand from "./components/Inventory/AddBrand";
+import BrandList from "./components/Inventory/BrandList";
+import BrandsFull from "./components/Inventory/BrandsFull";
+import AddModels from "./components/Inventory/AddModels";
+import ModelList from "./components/Inventory/ModelList";
+import AddBrandsToCategories from "./components/Inventory/AddBrandsToCategories";
 import CategoryBrandsList from "./components/CategoryBrandsList";
-import Suppliers from "./components/Suppliers";
-import AddSupplier from "./components/AddSupplier";
+import Suppliers from "./components/Inventory/Suppliers";
+import AddSupplier from "./components/Inventory/AddSupplier";
 import IpSettings from "./components/IpSettings";
 
 //import connectionData from './connection.json'
-import SupplierList from "./components/SupplierList";
-import InventoryLanding from "./components/InventoryLanding";
-import InventoryFilter from "./components/InventoryFilter";
-import WarrantyFilter from "./components/WarrantyFilter";
-import DepartmentFilter from "./components/DepartmentFilter";
-import SupplierFilter from "./components/SupplierFilter";
-import LocationFilter from "./components/LocationFilter";
-import InventoryFilter2 from "./components/InventoryFilter2";
-import WarrantyPresentEquipment from "./components/WarrantyPresentEquipment";
-import WarrantyAbsentEquipment from "./components/WarrantyAbsentEquipment";
+import SupplierList from "./components/Inventory/SupplierList";
+import InventoryLanding from "./components/Inventory/InventoryLanding";
+import InventoryFilter from "./components/Inventory/InventoryFilter";
+import WarrantyFilter from "./components/Inventory/WarrantyFilter";
+import DepartmentFilter from "./components/Inventory/DepartmentFilter";
+import SupplierFilter from "./components/Inventory/SupplierFilter";
+import LocationFilter from "./components/Inventory/LocationFilter";
+import InventoryFilter2 from "./components/Inventory/InventoryFilter2";
+import WarrantyPresentEquipment from "./components/Inventory/WarrantyPresentEquipment";
+import WarrantyAbsentEquipment from "./components/Inventory/WarrantyAbsentEquipment";
 //import SupplierList from "./components/SupplierList";
 
 function App() {

@@ -1,8 +1,8 @@
 import React from "react";
-import Toast1 from "./Toast1";
+import Toast1 from "../Toasts/Toast1";
 import {Button, Col, Form} from "react-bootstrap";
 import axios from "axios";
-import Toast2 from "./Toast2";
+import Toast2 from "../Toasts/Toast2";
 
 class AddModels extends React.Component{
 

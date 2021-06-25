@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import {render} from "@testing-library/react";
 import {Button, Col, Form} from "react-bootstrap";
-import Toast1 from "./Toast1";
+import Toast1 from "../Toasts/Toast1";
 
 class EditEquipment extends React.Component{
 

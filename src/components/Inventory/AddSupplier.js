@@ -1,8 +1,8 @@
 import React from "react";
 import {Button, Col, Form} from "react-bootstrap";
 import axios from "axios";
-import Toast1 from "./Toast1";
-import Toast2 from "./Toast2";
+import Toast1 from "../Toasts/Toast1";
+import Toast2 from "../Toasts/Toast2";
 
 class AddSupplier extends React.Component{
     constructor(props) {

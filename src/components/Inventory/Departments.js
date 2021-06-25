@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import axios from "axios";
 import {Button, Table} from "react-bootstrap";
-import Toast1 from "./Toast1";
+import Toast1 from "../Toasts/Toast1";
 import {resolveToLocation} from "react-router-dom/modules/utils/locationUtils";
 
 

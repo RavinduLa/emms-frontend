@@ -1,7 +1,7 @@
 import React from "react";
 import {Col, Container, Image, Row} from "react-bootstrap";
-import UserDetails from "./UserDetails";
-import image from "./images/Ceylon_Petroleum_Corporation_logo.png";
+import UserDetails from "../UserDetails";
+import image from "../images/Ceylon_Petroleum_Corporation_logo.png";
 import {Link} from "react-router-dom";
 
 class Header extends React.Component{

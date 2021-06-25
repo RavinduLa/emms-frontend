@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Col, Form} from "react-bootstrap";
-import Toast1 from "./Toast1";
+import Toast1 from "../Toasts/Toast1";
 import axios from "axios";
 
 class AddJob extends React.Component{

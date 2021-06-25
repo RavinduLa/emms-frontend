@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import Toast1 from "./Toast1";
+import Toast1 from "./Toasts/Toast1";
 import {Button, Table} from "react-bootstrap";
 import {Link} from "react-router-dom";
 

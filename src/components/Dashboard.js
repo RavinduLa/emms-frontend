@@ -3,7 +3,7 @@ import axios from "axios";
 import {Card, Col, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
-import AssetCountDepartment from "./AssetCountDepartment";
+import AssetCountDepartment from "./Inventory/AssetCountDepartment";
 
 class Dashboard extends React.Component{
 
