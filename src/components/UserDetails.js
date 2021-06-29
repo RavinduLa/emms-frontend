@@ -1,16 +1,58 @@
 import React from "react";
-import {Dropdown} from "react-bootstrap";
+import {Button, Dropdown} from "react-bootstrap";
+import {Link, Redirect} from "react-router-dom";
+import UserService from "../service/UserService";
 
 class UserDetails extends React.Component{
+
+    constructor(props) {
+        super(props);
+        this.state = this.initialState;
+
+
+
+    }
+
+    initialState={
+        user:'noUser'
+    }
+
+    componentDidMount() {
+        const currentUser = UserService.getCurrentUser();
+
+        if(currentUser){
+            this.setState({user:currentUser});
+        }
+    }
+
+    logout =()=> {
+        UserService.logout();
+        window.location.reload();
+    }
     render() {
         return(
             <Dropdown>
-                <Dropdown.Toggle className='btn btn-block' variant='success' id='username'>
-                    Username
-                </Dropdown.Toggle>
+
+                {
+                    this.state.user.username === undefined?
+                        <Dropdown.Toggle className='btn btn-block' variant='success' id='username'>
+                            Logged Out
+
+                        </Dropdown.Toggle >:
+                        <Dropdown.Toggle className='btn btn-block' variant='success' id='username'>
+                            {this.state.user.username}
+                        </Dropdown.Toggle>
+                }
+
                 <Dropdown.Menu>
                     <Dropdown.Item>Profile</Dropdown.Item>
-                    <Dropdown.Item>Logout</Dropdown.Item>
+                    <Dropdown.Item>
+                        {/*<a href={"/login"} className={"dropdown-item"} onClick={this.logout}>Logout</a>*/}
+                        <Link to={'/login'} className={"dropdown-item"} onClick={this.logout}>Logout</Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                        <Link to={'/login'} className={'dropdown-item'}>Login</Link>
+                    </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
         );

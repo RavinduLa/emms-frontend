@@ -12,12 +12,19 @@ class UserService extends React.Component{
 
     //login function for user
     login(username, password){
+
+        console.log("Running login");
+        console.log("Username : "+username);
+        console.log("Password : "+password);
+        console.log("Connection url : "+global.con);
+
         const requestBody ={
-            username:username,
-            password:password
+            username,
+            password
         }
-        return axios.post(BACKEND_URL+"/authenticate",requestBody)
+        return axios.post(global.con+"/authenticate",{username,password})
             .then(response => {
+                console.log("Jwt : "+response.data.jwt);
                 if (response.data.jwt){
                     sessionStorage.setItem("user",JSON.stringify(response.data));
                 }
@@ -25,4 +32,16 @@ class UserService extends React.Component{
             });
     }
 
+    //method to logout the current user
+    logout(){
+        console.log("Logging out user")
+        sessionStorage.removeItem("user");
+    }
+
+    //returns the current user
+    getCurrentUser(){
+        return JSON.parse(sessionStorage.getItem("user"));
+    }
+
 }
+export default new UserService();
