@@ -5,6 +5,8 @@ import {Button, Table} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
 
+import BrandService from "../../service/BrandService";
+
 class BrandList extends React.Component{
 
     constructor(props) {
@@ -26,7 +28,8 @@ class BrandList extends React.Component{
         const URL_LOCALHOST = "http://localhost:8080/api/allBrands";
         const URL_VIEW_ALL_BRANDS = global.con + "/api/allBrands"
 
-        axios.get(URL_LOCALHOST)
+        //axios.get(URL_LOCALHOST)
+        BrandService.getAllBrands()
             .then(response => response.data)
             .then( (data) => {
                 this.setState( {brands : data})
@@ -39,7 +42,8 @@ class BrandList extends React.Component{
         const DELETE_LOCALHOST_URL = "http://localhost:8080/api/deleteBrand/";
         const DELETE_BRAND = global.con + "/api/deleteBrand/";
 
-        axios.delete(DELETE_BRAND+brandId)
+        //axios.delete(DELETE_BRAND+brandId)
+        BrandService.deleteBrand(brandId)
             .then(response => {
                 if(response.data != null){
                     this.setState({"show" : true})

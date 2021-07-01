@@ -4,6 +4,8 @@ import Toast2 from "../Toasts/Toast2";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import axios from "axios";
 
+import BrandService from "../../service/BrandService";
+
 class AddBrand extends React.Component{
 
     constructor(props) {
@@ -42,7 +44,8 @@ class AddBrand extends React.Component{
 
         if(this.state.brandAvailabilityStatus == 'available'){
             console.log("Brand is available")
-            axios.post(URL_ADD,brand)
+            //axios.post(URL_ADD,brand)
+            BrandService.addBrand(brand)
                 .then(response => {
                     if(response.data !=  null){
                         this.resetBrand();
@@ -73,7 +76,8 @@ class AddBrand extends React.Component{
             const URL_LOCALHOST = "http://localhost:8080/api/isBrandAvailable/";
             //getting api ip address by global variable
             const URL_CHECK_AVAILABILITY = global.con + "/api/isBrandAvailable/";
-            await axios.get(URL_CHECK_AVAILABILITY+this.state.brandName)
+            //await axios.get(URL_CHECK_AVAILABILITY+this.state.brandName)
+            BrandService.isBrandAvailable(this.state.brandName)
                 .then( response => {
                     if(response.data ==  true){
                         console.log("Brand availability statue set available");

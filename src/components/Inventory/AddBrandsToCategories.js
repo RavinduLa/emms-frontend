@@ -3,6 +3,7 @@ import {Button, Col, Form} from "react-bootstrap";
 import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
+import BrandService from "../../service/BrandService";
 
 class AddBrandsToCategories extends React.Component{
     constructor(props) {
@@ -33,7 +34,8 @@ class AddBrandsToCategories extends React.Component{
         const URL_BRANDS = global.con + "/api/allBrands";
         const URL_CATEGORIES = global.con + "/api/allCategories";
 
-        axios.get(URL_LOCALHOST_BRANDS)
+        //axios.get(URL_LOCALHOST_BRANDS)
+        BrandService.getAllBrands()
             .then( response => response.data)
             .then( (data) => {
                 this.setState({brandList: data})
