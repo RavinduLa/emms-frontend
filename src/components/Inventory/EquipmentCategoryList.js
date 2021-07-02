@@ -4,6 +4,7 @@ import {Button, Table} from "react-bootstrap";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
+import CategoryService from "../../service/CategoryService";
 
 class EquipmentCategoryList extends React.Component{
 
@@ -25,7 +26,8 @@ class EquipmentCategoryList extends React.Component{
         const URL_LOCALHOST = "http://localhost:8080/api/allCategories";
         const URL_ALL_CATEGORIES = global.con + "/api/allCategories";
 
-        axios.get(URL_ALL_CATEGORIES)
+        //axios.get(URL_ALL_CATEGORIES)
+        CategoryService.getAllCategories()
             .then(response => response.data)
             .then((data) => {
                 this.setState({categories: data})
@@ -39,7 +41,8 @@ class EquipmentCategoryList extends React.Component{
         const URL_LOCALHOST = "http://localhost:8080/api/allCategories";
         const URL_ALL_CATEGORIES = global.con + "/api/allCategories";
 
-        axios.get(URL_ALL_CATEGORIES)
+        //axios.get(URL_ALL_CATEGORIES)
+        CategoryService.getAllCategories()
             .then(response => response.data)
             .then((data) => {
                 this.setState({categories: data})
@@ -53,7 +56,8 @@ class EquipmentCategoryList extends React.Component{
         const URL_LOCALHOST = "http://localhost:8080/api/deleteCategoryById/";
         const URL_DELETE_CATEGORY = global.con + "/api/deleteCategoryById/"
 
-        axios.delete(URL_DELETE_CATEGORY+categoryId)
+        //axios.delete(URL_DELETE_CATEGORY+categoryId)
+            CategoryService.deleteCategory(categoryId)
             .then(response => {
                 if(response.data != null){
                     this.setState({"show" : true})

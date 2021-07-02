@@ -3,6 +3,12 @@ import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
+import DepartmentService from "../../service/DepartmentService";
+import SupplierService from "../../service/SupplierService";
+import CategoryService from "../../service/CategoryService";
+import BrandService from "../../service/BrandService";
+import ModelService from "../../service/ModelService";
+import EquipmentService from "../../service/EquipmentService";
 //import async from "async";
 
 
@@ -81,7 +87,8 @@ class AddInventory extends React.Component{
         const URL_MODELS = global.con + "/api/allModels";
         const URL_SUPPLIERS = global.con + "/api/allSuppliers/";
 
-        await axios.get(URL_DEPARTMENTS)
+        //await axios.get(URL_DEPARTMENTS)
+        await DepartmentService.getAllDepartments()
             .then( response => response.data)
             .then((data) =>{
 
@@ -96,7 +103,8 @@ class AddInventory extends React.Component{
                 alert("Error in getting departments\n"+error+"\nBackend server might be down")
         });
 
-        await axios.get(URL_SUPPLIERS)
+        //await axios.get(URL_SUPPLIERS)
+        await SupplierService.getAllSuppliers()
             .then(response => response.data)
             .then(  (data) => {
                 this.setState({supplierList: data})
@@ -104,7 +112,8 @@ class AddInventory extends React.Component{
                 this.setState( {supplierId : data[0].supplierId})
             })
 
-        await axios.get(URL_CATEGORIES)
+        //await axios.get(URL_CATEGORIES)
+            await CategoryService.getAllCategories()
             .then(response => response.data)
             .then( (data) => {
 
@@ -124,7 +133,9 @@ class AddInventory extends React.Component{
         const LOCAL_HOST_URL_FIND_BRANDS = "http://localhost:8080/api/getBrandsForCategory/";
         const URL_FIND_BRANDS = global.con + "/api/getBrandsForCategory/";
         console.log("type before find brands : " + this.state.type)
-        await axios.get(URL_FIND_BRANDS + this.state.type)
+        //await axios.get(URL_FIND_BRANDS + this.state.type)
+            await CategoryService.getBrandsForCategory(this.state.type)
+
             .then(response => response.data)
             .then(  (data) => {
                 this.setState( {filteredBrandList:data})
@@ -135,7 +146,8 @@ class AddInventory extends React.Component{
 
         const LOCAL_HOST_FIND_MODELS = "http://localhost:8080/api/getModelsForBrand/";
         const URL_FIND_MODELS = global.con + "/api/getModelsForBrand/"
-        await axios.get(URL_FIND_MODELS + this.state.brand)
+        //await axios.get(URL_FIND_MODELS + this.state.brand)
+            await ModelService.getModelsForBrand(this.state.brand)
             .then(response => response.data )
             .then( (data) => {
                 this.setState( {filteredModelList: data})
@@ -165,7 +177,8 @@ class AddInventory extends React.Component{
         let items = [];
         const LOCAL_HOST_URL = "http://localhost:8080/api/allDepartments";
         const URL_ALL_DEPARTMENTS = global.con + "/api/allDepartments"
-        axios.get(URL_ALL_DEPARTMENTS)
+        //axios.get(URL_ALL_DEPARTMENTS)
+            DepartmentService.getAllDepartments()
             .then(response => {
                 if(response.data != null){
                     items2 = response.data;
@@ -216,7 +229,8 @@ class AddInventory extends React.Component{
             console.log("Id status: available");
 
             //console.log("Equipment: " + this.state.equipment.purchaseDate)
-            axios.post(URL_ADD_EQUIPMENT,equipment)
+            //axios.post(URL_ADD_EQUIPMENT,equipment)
+            EquipmentService.addEquipment(equipment)
                 .then(response =>{
                     if(response.data != null){
                         this.setState({"show" : true})
@@ -249,7 +263,8 @@ class AddInventory extends React.Component{
         }
         else {
             console.log("Asset id: " + this.state.assetId);
-            axios.get(URL_CHECK_ID_AVAILABILITY+this.state.assetId)
+            //axios.get(URL_CHECK_ID_AVAILABILITY+this.state.assetId)
+            EquipmentService.checkIdAvailability(this.state.assetId)
                 .then(response => {
                     if(response.data == true){
                         console.log("Id is not used");
@@ -299,7 +314,8 @@ class AddInventory extends React.Component{
 
         const LOCAL_HOST_URL_FIND_BRANDS = "http://localhost:8080/api/getBrandsForCategory/";
         const URL_FIND_BRANDS = global.con + "/api/getBrandsForCategory/"
-        await axios.get(URL_FIND_BRANDS+this.state.type)
+        //await axios.get(URL_FIND_BRANDS+this.state.type)
+            await CategoryService.getBrandsForCategory(this.state.type)
             .then(response => response.data)
             .then(  (data) => {
                 this.setState( {filteredBrandList:data})
@@ -316,7 +332,8 @@ class AddInventory extends React.Component{
 
         const LOCAL_HOST_FIND_MODELS = "http://localhost:8080/api/getModelsForBrand/";
         const URL_FIND_MODELS = global.con + "/api/getModelsForBrand/"
-        await axios.get(URL_FIND_MODELS + this.state.brand)
+        //await axios.get(URL_FIND_MODELS + this.state.brand)
+            await ModelService.getModelsForBrand(this.state.brand)
             .then(response => response.data )
             .then( (data) => {
                 this.setState( {filteredModelList: data})
@@ -333,7 +350,8 @@ class AddInventory extends React.Component{
     updateBrands =async() => {
         const LOCAL_HOST_URL_FIND_BRANDS = "http://localhost:8080/api/getBrandsForCategory/";
         const URL_FIND_BRANDS = global.con + "/api/getBrandsForCategory/"
-        await axios.get(URL_FIND_BRANDS+this.state.type)
+        //await axios.get(URL_FIND_BRANDS+this.state.type)
+            await CategoryService.getBrandsForCategory(this.state.type)
             .then(response => response.data)
             .then(  (data) => {
                 this.setState( {filteredBrandList:data})
@@ -353,7 +371,8 @@ class AddInventory extends React.Component{
 
         const LOCAL_HOST_FIND_MODELS = "http://localhost:8080/api/getModelsForBrand/";
         const URL_FIND_MODELS = global.con + "/api/getModelsForBrand/"
-        await axios.get(URL_FIND_MODELS + this.state.brand)
+        //await axios.get(URL_FIND_MODELS + this.state.brand)
+            await ModelService.getModelsForBrand(this.state.brand)
             .then(response => response.data )
             .then( (data) => {
                 this.setState( {filteredModelList: data})
@@ -368,7 +387,8 @@ class AddInventory extends React.Component{
     updateModels = async() => {
         const LOCAL_HOST_FIND_MODELS = "http://localhost:8080/api/getModelsForBrand/";
         const URL_FIND_MODELS = global.con + "/api/getModelsForBrand/"
-        await axios.get(URL_FIND_MODELS + this.state.brand)
+        //await axios.get(URL_FIND_MODELS + this.state.brand)
+            await ModelService.getModelsForBrand(this.state.brand)
             .then(response => response.data )
             .then( (data) => {
                 this.setState( {filteredModelList: data})
@@ -409,7 +429,8 @@ class AddInventory extends React.Component{
         const URL_FIND_MODELS = global.con + "/api/getModelsForBrand/";
         const URL_FIND_SUPPLIERS = global.con + "/api/allSuppliers/";
 
-        axios.get(URL_DEPARTMENTS)
+        //axios.get(URL_DEPARTMENTS)
+        DepartmentService.getAllDepartments()
             .then( response => response.data)
             .then((data) => {
                 this.setState({deptList: data})
@@ -417,7 +438,8 @@ class AddInventory extends React.Component{
             alert("Error in getting departments in resetting\n"+error+"\nBackend server might be down")
         });
 
-        axios.get(URL_FIND_SUPPLIERS)
+        //axios.get(URL_FIND_SUPPLIERS)
+        SupplierService.getAllSuppliers()
             .then( response => response.data)
             .then((data) => {
                 this.setState({supplierList: data})
@@ -425,7 +447,8 @@ class AddInventory extends React.Component{
             alert("Error in getting departments in resetting\n"+error+"\nBackend server might be down")
         });
 
-        axios.get(URL_CATEGORIES)
+        //axios.get(URL_CATEGORIES)
+        CategoryService.getAllCategories()
             .then(response => response.data)
             .then( (data) => {
 
@@ -442,7 +465,8 @@ class AddInventory extends React.Component{
             alert("Error in getting categories in resetting\n"+error+"\nBackend server might be down")
             });
 
-        axios.get(URL_FIND_BRANDS + this.state.type)
+        //axios.get(URL_FIND_BRANDS + this.state.type)
+        CategoryService.getBrandsForCategory(this.state.type)
             .then(response => response.data)
             .then(  (data) => {
                 this.setState( {filteredBrandList:data})
@@ -453,7 +477,8 @@ class AddInventory extends React.Component{
             alert("Error in getting brands in resetting\n"+error+"\nBackend server might be down")
         })
 
-        axios.get(URL_FIND_MODELS + this.state.brand)
+        //axios.get(URL_FIND_MODELS + this.state.brand)
+            ModelService.getModelsForBrand(this.state.brand)
             .then(response => response.data )
             .then( (data) => {
                 this.setState( {filteredModelList: data})

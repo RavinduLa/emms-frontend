@@ -3,6 +3,7 @@ import {Button, Col, Form} from "react-bootstrap";
 import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
+import CategoryService from "../../service/CategoryService";
 
 class AddEquipmentCategory extends React.Component{
 
@@ -54,7 +55,8 @@ class AddEquipmentCategory extends React.Component{
 
             console.log("Category is available")
 
-            axios.post(URL_ADD_CATEGORY,category)
+            //axios.post(URL_ADD_CATEGORY,category)
+                CategoryService.addCategory(category)
                 .then(  response => {
                     console.log("post in then block")
                     if(response.data != null){
@@ -89,7 +91,8 @@ class AddEquipmentCategory extends React.Component{
         else{
             const URL_LOCALHOST = "http://localhost:8080/api/isCategoryAvailable/";
             const URL_CATEGORY_AVAILABLE = global.con + "/api/isCategoryAvailable/";
-            await axios.get(URL_CATEGORY_AVAILABLE + this.state.categoryName)
+            //await axios.get(URL_CATEGORY_AVAILABLE + this.state.categoryName)
+            await CategoryService.isCategoryAvailable(this.state.categoryName)
                 .then( response => {
                     if(response.data == true){
                         console.log("Category availability status set available");

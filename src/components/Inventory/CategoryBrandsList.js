@@ -1,8 +1,9 @@
 import React from "react";
 import axios from "axios";
-import Toast1 from "./Toasts/Toast1";
+import Toast1 from "../Toasts/Toast1";
 import {Button, Table} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import CategoryService from "../../service/CategoryService";
 
 class CategoryBrandsList extends React.Component{
     constructor(props) {
@@ -25,7 +26,8 @@ class CategoryBrandsList extends React.Component{
     componentDidMount() {
         const LOCALHOST_URL_GET_ALL = "http://localhost:8080/api/allCategoryBrandCombinations"
         const URL_GET_ALL_COMBINATIONS = global.con + "/api/allCategoryBrandCombinations";
-        axios.get(URL_GET_ALL_COMBINATIONS)
+        //axios.get(URL_GET_ALL_COMBINATIONS)
+        CategoryService.getAllCategoryBrandCombinations()
             .then(response => response.data)
             .then( (data) => {
                 this.setState( {comboList: data}  )
@@ -40,7 +42,8 @@ class CategoryBrandsList extends React.Component{
 
         const LOCAL_HOST_URL_DELETE = "http://localhost:8080/api/deleteBrandCategoryById/"
         const URL_DELETE_COMBO = global.con + "/api/deleteBrandCategoryById/"
-        axios.delete(URL_DELETE_COMBO+id)
+        //axios.delete(URL_DELETE_COMBO+id)
+            CategoryService.deleteBrandCategory(id)
             .then(response => {
                 if(response.data != null){
                     this.setState({"show":true})

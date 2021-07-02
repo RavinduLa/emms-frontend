@@ -4,6 +4,7 @@ import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
 import BrandService from "../../service/BrandService";
+import CategoryService from "../../service/CategoryService";
 
 class AddBrandsToCategories extends React.Component{
     constructor(props) {
@@ -44,7 +45,9 @@ class AddBrandsToCategories extends React.Component{
                 alert(error)
         })
 
-        axios.get(URL_LOCALHOST_CATEGORIES)
+
+        //axios.get(URL_LOCALHOST_CATEGORIES)
+            CategoryService.getAllCategories()
             .then( response => response.data)
             .then( (data) => {
                 this.setState({categoryList: data})
@@ -64,7 +67,8 @@ class AddBrandsToCategories extends React.Component{
 
         const LOCALHOST_URL_ADD_BRAND_TO_CATEGORY = "http://localhost:8080/api/addBrandToCategory/"
 
-        axios.post(LOCALHOST_URL_ADD_BRAND_TO_CATEGORY,combo)
+        //axios.post(LOCALHOST_URL_ADD_BRAND_TO_CATEGORY,combo)
+            CategoryService.addBrandToCategory(combo)
             .then(response => {
                 if (response.data == true){
                     this.setState({"show" : true})

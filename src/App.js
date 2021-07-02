@@ -33,7 +33,7 @@ import BrandsFull from "./components/Inventory/BrandsFull";
 import AddModels from "./components/Inventory/AddModels";
 import ModelList from "./components/Inventory/ModelList";
 import AddBrandsToCategories from "./components/Inventory/AddBrandsToCategories";
-import CategoryBrandsList from "./components/CategoryBrandsList";
+import CategoryBrandsList from "./components/Inventory/CategoryBrandsList";
 import Suppliers from "./components/Inventory/Suppliers";
 import AddSupplier from "./components/Inventory/AddSupplier";
 import IpSettings from "./components/IpSettings";

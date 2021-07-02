@@ -24,7 +24,7 @@ class CategoryService extends Component{
     }
 
     deleteCategory(id){
-        return axios.delete(global.con + COMMON_URL +"deleteCategoryById"+id,{headers:AuthHeader()});
+        return axios.delete(global.con + COMMON_URL +"deleteCategoryById/"+id,{headers:AuthHeader()});
     }
 
     getAllCategoryBrandCombinations(){
@@ -39,11 +39,11 @@ class CategoryService extends Component{
         return axios.delete(global.con + COMMON_URL + "deleteBrandCategoryById/" + id, {headers:AuthHeader()});
     }
 
-    getBrandsFoCategory(category){
+    getBrandsForCategory(category){
         return axios.get(global.con + COMMON_URL + "getBrandsForCategory/" + category, {headers: AuthHeader()});
     }
 
-    isNameAvailable (name){
+    isCategoryAvailable (name){
         return axios.get(global.con + COMMON_URL + "isCategoryAvailable/"+ name, { headers: AuthHeader()});
     }
 

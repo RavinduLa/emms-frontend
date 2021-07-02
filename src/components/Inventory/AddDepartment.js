@@ -3,6 +3,7 @@ import {Badge, Button, Form} from "react-bootstrap";
 import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
+import DepartmentService from "../../service/DepartmentService";
 
 class AddDepartment extends React.Component{
 
@@ -23,7 +24,7 @@ class AddDepartment extends React.Component{
 
     }
 
-    submitDepartment = event =>{
+    submitDepartment = async (event) =>{
 
         event.preventDefault();
 
@@ -32,12 +33,17 @@ class AddDepartment extends React.Component{
             departmentName:  this.state.departmentName
         }
 
+        console.log("Department id : " + department.did);
+        console.log("Department name : " + department.departmentName);
+        console.log("Department id status: " + this.state.idStatus);
 
-        this.isDidAvailable();
+
+        await this.isDidAvailable();
         if(this.state.idStatus == 'available'){
             const LOCALHOST_URL = "http://localhost:8080/api/addDepartment"
             const URL_ADD_DEPARTMENT = global.con + "/api/addDepartment"
-            axios.post(URL_ADD_DEPARTMENT,department)
+            //axios.post(URL_ADD_DEPARTMENT,department)
+                DepartmentService.addDepartment(department)
                 .then( response => {
                     if(response.data != null){
                         this.setState({"show" : true})
@@ -62,19 +68,20 @@ class AddDepartment extends React.Component{
     }
 
 
-    isDidAvailable(){
+    isDidAvailable = async () =>{
         const LOCALHOST_URL = "http://localhost:8080/api/getIdAvailability/"
         const GET_ID_AVAILABILITY = global.con + "/api/getIdAvailability/"
-        axios.get(GET_ID_AVAILABILITY+this.state.did)
+        //axios.get(GET_ID_AVAILABILITY+this.state.did)
+            await DepartmentService.getIdAvailability(this.state.did)
             .then( response => {
                 if(response.data == true){
-                    this.state.idStatus = 'available'
+                    this.setState({idStatus:'available'});
                     return true;
                 }
                 else {
                     this.setState({"idWarningShow" :true})
                     setTimeout(() => this.setState({"idWarningShow" : false}),3000)
-                    this.state.idStatus = 'unavailable'
+                    this.setState({idStatus:'unavailable'});
                     return false;
                 }
             }).catch(error => {
@@ -82,7 +89,7 @@ class AddDepartment extends React.Component{
         })
 
     }
-    departmentChange = event =>{
+    departmentChange = (event) =>{
         this.setState({
             [event.target.name]:event.target.value
         });

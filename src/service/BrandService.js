@@ -32,6 +32,8 @@ class BrandService extends Component{
         return axios.delete(global.con + COMMON_URL +"deleteBrand/"+ id,{headers: AuthHeader()});
     }
 
+
+
 }
 
 export default new BrandService();
