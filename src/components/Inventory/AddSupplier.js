@@ -3,6 +3,7 @@ import {Button, Col, Form} from "react-bootstrap";
 import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
+import SupplierService from "../../service/SupplierService";
 
 class AddSupplier extends React.Component{
     constructor(props) {
@@ -46,7 +47,8 @@ class AddSupplier extends React.Component{
 
         if(this.state.supplierAvailability == 'available'){
 
-            axios.post(URL_ADD_SUPPLIER,Supplier)
+            //axios.post(URL_ADD_SUPPLIER,Supplier)
+            SupplierService.addSupplier(Supplier)
                 .then( response => {
                     if(response.data != null){
                         this.resetSupplier();
@@ -76,7 +78,8 @@ class AddSupplier extends React.Component{
             const URL_CHECK_AVAILABILITY = global.con+"/api/isSupplierAvailable/";
 
 
-            axios.get(URL_CHECK_AVAILABILITY+this.state.supplierName)
+            //axios.get(URL_CHECK_AVAILABILITY+this.state.supplierName)
+            SupplierService.isSupplierAvailable(this.state.supplierName)
                 .then( response =>{
                     if(response.data == true){
                         this.state.supplierAvailability = 'available'

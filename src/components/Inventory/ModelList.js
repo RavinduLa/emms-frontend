@@ -4,6 +4,7 @@ import Toast1 from "../Toasts/Toast1";
 import {Button, Table} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
+import ModelService from "../../service/ModelService";
 
 class ModelList extends React.Component{
 
@@ -28,7 +29,8 @@ class ModelList extends React.Component{
         const URL_LOCALHOST = "http://localhost:8080/api/allModels";
         const URL_ALL_MODELS = global.con + "/api/allModels";
 
-        axios.get(URL_ALL_MODELS)
+        //axios.get(URL_ALL_MODELS)
+        ModelService.getAllModels()
             .then(response => response.data)
             .then( (data) => {
                 this.setState( {models: data})
@@ -39,7 +41,8 @@ class ModelList extends React.Component{
         const DELETE_LOCALHOST_URL = "http://localhost:8080/api/deleteModelById/";
         const URL_DELETE_MODELS = global.con + "/api/deleteModelById/";
 
-        axios.delete(URL_DELETE_MODELS+modelId)
+        //axios.delete(URL_DELETE_MODELS+modelId)
+        ModelService.deleteModel(modelId)
             .then( response => {
                 if(response.data != null){
                     this.setState({"show":true})

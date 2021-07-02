@@ -3,6 +3,8 @@ import Toast1 from "../Toasts/Toast1";
 import {Button, Col, Form} from "react-bootstrap";
 import axios from "axios";
 import Toast2 from "../Toasts/Toast2";
+import BrandService from "../../service/BrandService";
+import ModelService from "../../service/ModelService";
 
 class AddModels extends React.Component{
 
@@ -33,7 +35,8 @@ class AddModels extends React.Component{
     componentDidMount() {
         const LOCAL_HOST_URL = "http://localhost:8080/api/allBrands";
         const URL_ALL_BRANDS = global.con + "/api/allBrands"
-        axios.get(LOCAL_HOST_URL)
+        //axios.get(LOCAL_HOST_URL)
+            BrandService.getAllBrands()
             .then(response => response.data)
             .then((data) => {
                 this.setState({brandList: data})
@@ -58,7 +61,8 @@ class AddModels extends React.Component{
         this.isModelAvailable();
         if(this.state.modelAvailabilityStatus == 'available'){
             console.log("Model details" + model.modelId+ model.model)
-            axios.post(URL_ADD_MODELS, model)
+            //axios.post(URL_ADD_MODELS, model)
+                ModelService.addModel(model)
                 .then(response => {
                     if (response.data != null){
                         this.setState({"show" : true})
@@ -86,7 +90,8 @@ class AddModels extends React.Component{
         else{
             const URL_LOCALHOST = "http://localhost:8080/api/isModelAvailable/";
             const URL_CHECK_MODEL_AVAILABILITY =global.con + "/api/isModelAvailable/";
-            axios.get(URL_CHECK_MODEL_AVAILABILITY+this.state.model)
+            //axios.get(URL_CHECK_MODEL_AVAILABILITY+this.state.model)
+            ModelService.isModelAvailable(this.state.model)
                 .then( response => {
                     if(response.data == true){
                         this.state.modelAvailabilityStatus = 'available'
@@ -110,7 +115,8 @@ class AddModels extends React.Component{
         this.setState( () => this.initialState);
         const LOCAL_HOST_URL = "http://localhost:8080/api/allBrands";
         const URL_ALL_BRANDS = global.con + "/api/allBrands";
-        axios.get(URL_ALL_BRANDS)
+        //axios.get(URL_ALL_BRANDS)
+        BrandService.getAllBrands()
             .then( response => response.data)
             .then((data) => {
                 this.setState({brandList: data})

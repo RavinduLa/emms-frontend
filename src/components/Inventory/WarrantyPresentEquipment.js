@@ -1,6 +1,7 @@
 import React from "react"
 import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import axios from "axios";
+import EquipmentService from "../../service/EquipmentService";
 
 class WarrantyPresentEquipment extends React.Component{
 
@@ -18,7 +19,8 @@ class WarrantyPresentEquipment extends React.Component{
     async componentDidMount(){
         const URL_EQUIPMENT = global.con+"/api/getUnderWarrantyEquipment/"
 
-        await axios.get(URL_EQUIPMENT)
+        //await axios.get(URL_EQUIPMENT)
+            await EquipmentService.getUnderWarrantyEquipment()
             .then(response => response.data)
             .then((data) => {
                 this.setState({equipment: data})

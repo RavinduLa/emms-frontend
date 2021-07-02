@@ -1,6 +1,9 @@
 import React from "react";
 import axios from "axios";
 import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
+import EquipmentService from "../../service/EquipmentService";
+import DepartmentService from "../../service/DepartmentService";
+import SupplierService from "../../service/SupplierService";
 
 class InventorySearchSN extends React.Component{
 
@@ -53,7 +56,8 @@ class InventorySearchSN extends React.Component{
         const URL_DEPARTMENT = global.con+"/api/getDepartmentNameById/";
         const URL_SUPPLIER = global.con+"/api/getSupplierNameForId/";
         this.setState({serialNumber: event.target.value});
-        await axios.get(URL_SEARCHINVENTORY + this.state.serialNumber)
+        //await axios.get(URL_SEARCHINVENTORY + this.state.serialNumber)
+        await EquipmentService.getEquipmentForSerialNumber(this.state.serialNumber)
             .then(response => response.data)
             .then((data) => {
                 //console.log(data)
@@ -84,13 +88,15 @@ class InventorySearchSN extends React.Component{
 
             })
 
-        await axios.get(URL_DEPARTMENT + this.state.departmentId)
+        //await axios.get(URL_DEPARTMENT + this.state.departmentId)
+            await DepartmentService.getDepartmentNameById(this.state.departmentId)
             .then(response => response.data)
             .then( (data) => {
                 this.setState({departmentName: data})
             })
 
-        await axios.get(URL_SUPPLIER + this.state.supplierId)
+        //await axios.get(URL_SUPPLIER + this.state.supplierId)
+                await SupplierService.getSupplierNameForId(this.state.supplierId)
             .then(response => response.data)
             .then( (data) => {
                 this.setState({supplierName: data})

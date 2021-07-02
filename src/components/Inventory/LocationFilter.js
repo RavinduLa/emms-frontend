@@ -1,6 +1,7 @@
 import React from "react";
 import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import axios from "axios";
+import EquipmentService from "../../service/EquipmentService";
 
 class LocationFilter extends React.Component{
     constructor(props) {
@@ -33,7 +34,8 @@ class LocationFilter extends React.Component{
         this.setState({location: event.target.value});
         this.setState({initialSearch: false})
 
-        await axios.get(URL_LOCATION+this.state.location)
+        //await axios.get(URL_LOCATION+this.state.location)
+            await EquipmentService.getEquipmentForLocation(this.state.location)
             .then(response => response.data)
             .then((data) => {
                 this.setState({equipment: data})

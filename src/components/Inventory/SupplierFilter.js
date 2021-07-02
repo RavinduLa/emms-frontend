@@ -1,6 +1,8 @@
 import React from "react";
 import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import axios from "axios";
+import SupplierService from "../../service/SupplierService";
+import EquipmentService from "../../service/EquipmentService";
 
 class SupplierFilter extends React.Component{
     constructor(props) {
@@ -29,7 +31,8 @@ class SupplierFilter extends React.Component{
 
         const URL_SUPPLIER = global.con+"/api/allSuppliers/";
 
-        await axios.get(URL_SUPPLIER)
+        //await axios.get(URL_SUPPLIER)
+        await SupplierService.getAllSuppliers()
             .then(response => response.data)
             .then((data) => {
                 this.setState({supplierList: data})
@@ -45,7 +48,8 @@ class SupplierFilter extends React.Component{
         this.setState( () => this.initialState);
         const URL_SUPPLIER = global.con+"/api/allSuppliers/";
 
-        await axios.get(URL_SUPPLIER)
+        //await axios.get(URL_SUPPLIER)
+        await SupplierService.getAllSuppliers()
             .then(response => response.data)
             .then((data) => {
                 this.setState({supplierList: data})
@@ -68,7 +72,8 @@ class SupplierFilter extends React.Component{
         const URL_EQUIPMENT= global.con+"/api/getEquipmentForSupplier/";
         this.setState({filterInitiated: true})
 
-        await axios.get(URL_EQUIPMENT+this.state.supplierId)
+        //await axios.get(URL_EQUIPMENT+this.state.supplierId)
+            await EquipmentService.getEquipmentForSupplier(this.state.supplierId)
             .then(response => response.data)
             .then((data) => {
                 this.setState({equipment: data})

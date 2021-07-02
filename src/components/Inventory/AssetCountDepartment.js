@@ -1,6 +1,9 @@
 import React from "react";
 import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import axios from "axios";
+import CategoryService from "../../service/CategoryService";
+import DepartmentService from "../../service/DepartmentService";
+import EquipmentService from "../../service/EquipmentService";
 
 class AssetCountDepartment extends React.Component{
 
@@ -36,7 +39,8 @@ class AssetCountDepartment extends React.Component{
 
         console.log("Asset count department component mounted")
 
-        await axios.get(URL_GET_ALL_TYPES)
+        //await axios.get(URL_GET_ALL_TYPES)
+         await   CategoryService.getAllCategories()
             .then(response => response.data)
             .then((data) => {
                 this.setState({typeList: data})
@@ -44,7 +48,8 @@ class AssetCountDepartment extends React.Component{
                 alert("Cannot get type list. Backend server might be down.\n"+error)
             })
 
-        await axios.get(URL_DEPARTMENTS)
+        //await axios.get(URL_DEPARTMENTS)
+             await DepartmentService.getAllDepartments()
             .then(response => response.data)
             .then((data) => {
                 this.setState({deptList: data})
@@ -55,7 +60,8 @@ class AssetCountDepartment extends React.Component{
         let departmentAssetCountMap = new Map();
         await this.state.deptList.map( (e) => (
 
-            axios.get(URL_GETEQUIPMENTCOUNT+e.did)
+            //axios.get(URL_GETEQUIPMENTCOUNT+e.did)
+            EquipmentService.getDepartmentAssetCount(e.did)
                 .then(response => response.data)
                 .then((data) => {
                     departmentAssetCountMap.set(e.did,data);
@@ -83,7 +89,8 @@ class AssetCountDepartment extends React.Component{
         this.setState(() => this.initialState);
         const URL_DEPARTMENTS = global.con+"/api/allDepartments/";
 
-        await axios.generateKey(URL_DEPARTMENTS)
+        //await axios.generateKey(URL_DEPARTMENTS)
+        await DepartmentService.getAllDepartments()
             .then(response => response.data)
             .then((data) => {
                 this.setState({deptList: data})
@@ -102,7 +109,8 @@ class AssetCountDepartment extends React.Component{
         const URL_GETEQUIPMENTCOUNT = global.con+"/api/getDepartmentAssetCount/";
         console.log("Running getDepartmentAssetCount");
 
-        await axios.get(URL_GETEQUIPMENTCOUNT+id)
+        //await axios.get(URL_GETEQUIPMENTCOUNT+id)
+         await EquipmentService.getDepartmentAssetCount(id)
             .then(response => response.data)
             .then((data) => {
                 console.log("Returning data: "+data);
@@ -179,7 +187,8 @@ class AssetCountDepartment extends React.Component{
 
         const URL_GETEQUIPMENTCOUNT = global.con+"/api/getDepartmentAssetCount/";
 
-        await axios.get(URL_GETEQUIPMENTCOUNT+this.state.departmentId)
+        //await axios.get(URL_GETEQUIPMENTCOUNT+this.state.departmentId)
+        await EquipmentService.getDepartmentAssetCount(this.state.departmentId)
             .then(response => response.data)
             .then((data) => {
                 this.setState({assetCount:data})
@@ -195,7 +204,8 @@ class AssetCountDepartment extends React.Component{
             const URL_GETEQUIPMENTCOUNT = global.con+"/api/getDepartmentAssetCount/";
             console.log("Running get asset count");
 
-            await axios.get(URL_GETEQUIPMENTCOUNT+id)
+            //await axios.get(URL_GETEQUIPMENTCOUNT+id)
+            await EquipmentService.getDepartmentAssetCount(id)
                 .then(response => response.data)
                 .then((data) => {
                     console.log("Returning data: "+data);

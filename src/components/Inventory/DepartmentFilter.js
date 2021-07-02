@@ -1,6 +1,8 @@
 import React from "react";
 import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import axios from "axios";
+import DepartmentService from "../../service/DepartmentService";
+import EquipmentService from "../../service/EquipmentService";
 
 class DepartmentFilter extends React.Component{
 
@@ -29,7 +31,8 @@ class DepartmentFilter extends React.Component{
 
         const URL_DEPARTMENT = global.con + "/api/allDepartments";
 
-        await axios.get(URL_DEPARTMENT)
+        //await axios.get(URL_DEPARTMENT)
+        await DepartmentService.getAllDepartments()
             .then( response => response.data)
             .then((data) => {
 
@@ -52,7 +55,8 @@ class DepartmentFilter extends React.Component{
 
         const URL_DEPARTMENT = global.con + "/api/allDepartments";
 
-        await axios.get(URL_DEPARTMENT)
+        //await axios.get(URL_DEPARTMENT)
+        await DepartmentService.getAllDepartments()
             .then( response => response.data)
             .then((data) => {
 
@@ -80,7 +84,9 @@ class DepartmentFilter extends React.Component{
 
         this.setState({filterInitiated: true})
         console.log("Selected department id: " + this.state.departmentId)
-         await axios.get(URL_EQUIPMENT+this.state.departmentId)
+
+         //await axios.get(URL_EQUIPMENT+this.state.departmentId)
+            await EquipmentService.getEquipmentForDepartment(this.state.departmentId)
             .then(response => response.data)
             .then((data) => {
                 this.setState({equipment: data})
