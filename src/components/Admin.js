@@ -32,6 +32,9 @@ class Admin extends React.Component{
                             <Col>
                                 <Link  className={'btn btn-warning btn-block'}to={"/departments"} >Departments</Link>
                             </Col>
+                            <Col>
+                                <Link  className={'btn btn-warning btn-block'}to={"/user"} >Internal Users</Link>
+                            </Col>
                         </Row>
 
 

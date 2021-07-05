@@ -50,6 +50,9 @@ import InventoryFilter2 from "./components/Inventory/InventoryFilter2";
 import WarrantyPresentEquipment from "./components/Inventory/WarrantyPresentEquipment";
 import WarrantyAbsentEquipment from "./components/Inventory/WarrantyAbsentEquipment";
 import Login from "./components/Login/Login";
+import RegisterUser from "./components/Users/RegisterUser";
+import UserPage from "./components/Users/UserPage";
+import ViewAllUsers from "./components/Users/ViewAllUsers";
 //import SupplierList from "./components/SupplierList";
 
 function App() {
@@ -139,6 +142,12 @@ function App() {
 
           {/*Auth paths*/}
           <Route path="/login" exact component={Login}/>
+
+          {/*User paths*/}
+
+          <Route path="/user" exact component={UserPage}/>
+          <Route path="/user/register" exact component={RegisterUser}/>
+          <Route path="/user/allUsers" exact component={ViewAllUsers}/>
 
           {/*<Route path="/departmentFilter" exact component={DepartmentFilter}/>*/}
         </Switch>

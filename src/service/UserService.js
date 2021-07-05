@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import AuthHeader from "./AuthHeader";
 
 const BACKEND_URL = global.con ;
 
@@ -41,6 +42,15 @@ class UserService extends React.Component{
     //returns the current user
     getCurrentUser(){
         return JSON.parse(sessionStorage.getItem("user"));
+    }
+
+    //register user -- only admin
+    register(user){
+        return axios.post(global.con + "/api/user/register",user,{headers: AuthHeader ()});
+    }
+
+    getAllUsers(){
+        return axios.get(global.con + "/api/user/get-all-users",{headers: AuthHeader()});
     }
 
 }
