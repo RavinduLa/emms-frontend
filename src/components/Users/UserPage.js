@@ -14,6 +14,7 @@ class UserPage extends React.Component{
 
                 <Link to={'/user/register'} className={'btn btn-primary'}>Add User</Link>
                 <Link to={'/user/allUsers'} className={'btn btn-secondary'}>View All Users</Link>
+                <Link to={'/user/deleteUsers'} className={'btn btn-danger'}>Delete Users</Link>
 
             </div>
         );

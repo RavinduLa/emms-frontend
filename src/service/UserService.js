@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import AuthHeader from "./AuthHeader";
 
-const BACKEND_URL = global.con ;
+const BACKEND_BASE_URL = "http://localhost:8080";
 
 class UserService extends React.Component{
 
@@ -23,7 +23,7 @@ class UserService extends React.Component{
             username,
             password
         }
-        return axios.post(global.con+"/authenticate",{username,password})
+        return axios.post(BACKEND_BASE_URL+"/authenticate",{username,password})
             .then(response => {
                 console.log("Jwt : "+response.data.jwt);
                 if (response.data.jwt){
@@ -46,11 +46,23 @@ class UserService extends React.Component{
 
     //register user -- only admin
     register(user){
-        return axios.post(global.con + "/api/user/register",user,{headers: AuthHeader ()});
+        return axios.post(BACKEND_BASE_URL+ "/api/user/register",user,{headers: AuthHeader ()});
     }
 
     getAllUsers(){
-        return axios.get(global.con + "/api/user/get-all-users",{headers: AuthHeader()});
+        return axios.get(BACKEND_BASE_URL + "/api/user/get-all-users",{headers: AuthHeader()});
+    }
+
+    getUserById(id){
+        return axios.get(BACKEND_BASE_URL + "/api/user/get-user/"+id,{headers: AuthHeader()});
+    }
+
+    updateUserRoles(roleUpdateRequest){
+        return axios.put(BACKEND_BASE_URL + "/api/user/updateUserByUsername",roleUpdateRequest,{headers: AuthHeader()});
+    }
+
+    deleteUserById(id){
+        return axios.delete(BACKEND_BASE_URL + "/api/user/deleteUser/" + id,{headers: AuthHeader()});
     }
 
 }

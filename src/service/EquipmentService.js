@@ -3,6 +3,7 @@ import axios from "axios";
 import AuthHeader from "./AuthHeader";
 
 const COMMON_URL = "/api/inventory/";
+const BACKEND_BASE_URL = "http://localhost:8080";
 
 class EquipmentService extends Component{
     constructor(props) {
@@ -11,7 +12,7 @@ class EquipmentService extends Component{
     }
 
     getAllEquipment(){
-        return axios.get(global.con + COMMON_URL + "equipment" , {headers: AuthHeader()});
+        return axios.get(BACKEND_BASE_URL + COMMON_URL + "equipment" , {headers: AuthHeader()});
     }
 
     getEquipmentById(id){

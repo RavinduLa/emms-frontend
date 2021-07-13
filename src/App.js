@@ -53,6 +53,8 @@ import Login from "./components/Login/Login";
 import RegisterUser from "./components/Users/RegisterUser";
 import UserPage from "./components/Users/UserPage";
 import ViewAllUsers from "./components/Users/ViewAllUsers";
+import EditUser from "./components/Users/EditUser";
+import DeleteUser from "./components/Users/DeleteUser";
 //import SupplierList from "./components/SupplierList";
 
 function App() {
@@ -148,6 +150,8 @@ function App() {
           <Route path="/user" exact component={UserPage}/>
           <Route path="/user/register" exact component={RegisterUser}/>
           <Route path="/user/allUsers" exact component={ViewAllUsers}/>
+          <Route path="/user/deleteUsers" exact component={DeleteUser}/>
+          <Route path="/user/:id" exact component={EditUser}/>
 
           {/*<Route path="/departmentFilter" exact component={DepartmentFilter}/>*/}
         </Switch>
