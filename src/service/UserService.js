@@ -65,5 +65,13 @@ class UserService extends React.Component{
         return axios.delete(BACKEND_BASE_URL + "/api/user/deleteUser/" + id,{headers: AuthHeader()});
     }
 
+    enableUser(id){
+        return axios.put(BACKEND_BASE_URL + "/api/user/enable/" +id, {},{headers:AuthHeader()});
+    }
+
+    disableUser(id){
+        return axios.put(BACKEND_BASE_URL + "/api/user/disable/" +id, {}, {headers: AuthHeader()} );
+    }
+
 }
 export default new UserService();
