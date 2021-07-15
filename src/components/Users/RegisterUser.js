@@ -12,6 +12,8 @@ class RegisterUser extends React.Component{
         this.onChange = this.onChange.bind(this);
         this.onSelectRoles = this.onSelectRoles.bind(this);
         this.submitUser = this.submitUser.bind(this);
+        this.toggleShowPassword = this.toggleShowPassword.bind(this);
+        this.resetForm = this.resetForm.bind(this);
 
     }
 
@@ -27,6 +29,9 @@ class RegisterUser extends React.Component{
         ]
     }
 
+    componentDidMount() {
+    }
+
     onChange = (event) => {
         this.setState({[event.target.name]:event.target.value});
     }
@@ -35,7 +40,7 @@ class RegisterUser extends React.Component{
         this.setState({roles:event ? event.map(item => item.value) : []  });
     }
 
-    submitUser = (event) => {
+    submitUser = async (event) => {
         event.preventDefault();
         let modeledRoles=[];
 
@@ -53,7 +58,7 @@ class RegisterUser extends React.Component{
 
         console.log(registrationRequest);
 
-        UserService.register(registrationRequest)
+        await UserService.register(registrationRequest)
             .then(response => response.data)
             .then((data) => {
                 if (data != null){
@@ -65,7 +70,23 @@ class RegisterUser extends React.Component{
             }).catch(error => {
                 console.log("Error in calling register");
                 console.log("Error code : " + error);
-        })
+        });
+
+        await this.resetForm();
+
+    }
+
+    toggleShowPassword = () => {
+        let x = document.getElementById("passwordId");
+        if (x.type === 'password'){
+            x.type = 'text';
+        }else{
+            x.type = 'password';
+        }
+    }
+
+    resetForm(){
+        this.setState( () => this.initialState)
     }
 
     render() {
@@ -87,13 +108,20 @@ class RegisterUser extends React.Component{
 
                     <Form.Group>
                         <Form.Label>Password</Form.Label>
+                        <h6>Must contain numbers, letters, special characters and at least 6 characters</h6>
                         <Form.Control
                             type={'password'}
                             name={'password'}
+                            id={'passwordId'}
+                            pattern={"(?=.*\\d)(?=.*[a-zA-Z])(?=.*?[~`!@#$%\\^&*()\\-_=+[\\]{};:\x27.,\x22\\\\|/?><]).{6,}"}
                             required
                             onChange={this.onChange}
 
                         />
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Check type={'checkbox'} label={'Show Password'} onClick={this.toggleShowPassword} />
                     </Form.Group>
 
                     <Select
