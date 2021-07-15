@@ -2,12 +2,14 @@ import React from "react";
 import {Button, Form} from "react-bootstrap";
 import UserContext from "../../context/UserContext";
 import UserService from "../../service/UserService";
+import Toast1 from "../Toasts/Toast1";
 
 class Login extends React.Component{
 
     constructor(props) {
         super(props);
         this.state = this.initialState;
+        this.state.show = false;
 
         this.onChange = this.onChange.bind(this);
         this.submitLogin = this.submitLogin.bind(this);
@@ -35,6 +37,8 @@ class Login extends React.Component{
                 window.location.reload();
             },error => {
                 console.log("Username or password incorrect");
+                this.setState({"show":true});
+                setTimeout(() => this.setState({"show" : false}),3000);
             })
     }
 
@@ -42,6 +46,14 @@ class Login extends React.Component{
         return (
 
                         <div className={'container'}>
+
+                            <div style={{"display":this.state.show ? "block" :"none" }}>
+                                <Toast1
+                                    children={{show:this.state.show,
+                                        message:"Username Or Password Incorrect",
+                                        type: 'danger'}}/>
+                            </div>
+
                             <Form onSubmit={this.submitLogin}>
                                 <Form.Group>
                                     <Form.Label>Username</Form.Label>
