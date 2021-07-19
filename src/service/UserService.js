@@ -73,5 +73,9 @@ class UserService extends React.Component{
         return axios.put(BACKEND_BASE_URL + "/api/user/disable/" +id, {}, {headers: AuthHeader()} );
     }
 
+    resetPassword(resetRequest){
+        return axios.put(BACKEND_BASE_URL + "/api/user/resetPassword",resetRequest,{headers:AuthHeader()});
+    }
+
 }
 export default new UserService();
