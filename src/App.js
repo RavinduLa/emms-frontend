@@ -57,6 +57,7 @@ import EditUser from "./components/Users/EditUser";
 import DeleteUser from "./components/Users/DeleteUser";
 import AdminResetPassword from "./components/Users/AdminResetPassword";
 import AdminResetPwSingleView from "./components/Users/AdminResetPwSingleView";
+import UserProfile from "./components/Users/UserProfile";
 //import SupplierList from "./components/SupplierList";
 
 function App() {
@@ -149,6 +150,8 @@ function App() {
 
           {/*User paths*/}
 
+
+
           <Route path="/user" exact component={UserPage}/>
           <Route path="/user/register" exact component={RegisterUser}/>
           <Route path="/user/allUsers" exact component={ViewAllUsers}/>
@@ -157,6 +160,8 @@ function App() {
           <Route path="/user/resetPassword/:id" exact component={AdminResetPwSingleView}/>
           {/*<Route path="/user/adminResetPwSingleView" exact component={AdminResetPwSingleView}/>*/}
           <Route path="/user/:id" exact component={EditUser}/>
+
+          <Route path="/individualUser/profile" exact component={UserProfile}/>
 
           {/*<Route path="/departmentFilter" exact component={DepartmentFilter}/>*/}
         </Switch>

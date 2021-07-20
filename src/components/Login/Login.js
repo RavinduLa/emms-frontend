@@ -54,6 +54,7 @@ class Login extends React.Component{
                                         type: 'danger'}}/>
                             </div>
 
+                            <h1>Login</h1>
                             <Form onSubmit={this.submitLogin}>
                                 <Form.Group>
                                     <Form.Label>Username</Form.Label>

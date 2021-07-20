@@ -44,16 +44,27 @@ class UserDetails extends React.Component{
                         </Dropdown.Toggle>
                 }
 
-                <Dropdown.Menu>
-                    <Dropdown.Item>Profile</Dropdown.Item>
-                    <Dropdown.Item>
-                        {/*<a href={"/login"} className={"dropdown-item"} onClick={this.logout}>Logout</a>*/}
-                        <Link to={'/login'} className={"dropdown-item"} onClick={this.logout}>Logout</Link>
-                    </Dropdown.Item>
-                    <Dropdown.Item>
-                        <Link to={'/login'} className={'dropdown-item'}>Login</Link>
-                    </Dropdown.Item>
-                </Dropdown.Menu>
+
+                {
+                    this.state.user.username === undefined?
+                        <Dropdown.Menu>
+                            <Dropdown.Item>
+                                <Link to={'/login'} className={'dropdown-item'}>Login</Link>
+                            </Dropdown.Item>
+                        </Dropdown.Menu>:
+                        <Dropdown.Menu>
+
+                            <Dropdown.Item>
+                                <Link to={'/individualUser/profile' } className={'dropdown-item'}>Profile</Link>
+                            </Dropdown.Item>
+                            <Dropdown.Item>
+                                {/*<a href={"/login"} className={"dropdown-item"} onClick={this.logout}>Logout</a>*/}
+                                <Link to={'/login'} className={"dropdown-item"} onClick={this.logout}>Logout</Link>
+                            </Dropdown.Item>
+
+                        </Dropdown.Menu>
+                }
+
             </Dropdown>
         );
     }
