@@ -81,5 +81,9 @@ class UserService extends React.Component{
         return axios.get(BACKEND_BASE_URL + "/api/individualUser/getUser/"+username, {headers:AuthHeader()});
     }
 
+    isUsernameAvailable(username){
+        return axios.get(BACKEND_BASE_URL + "/api/user/isUsernameAvailable/" + username, {headers: AuthHeader()});
+    }
+
 }
 export default new UserService();

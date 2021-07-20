@@ -2,12 +2,14 @@ import React from "react";
 import Select from "react-select";
 import {Button, Form} from "react-bootstrap";
 import UserService from "../../service/UserService";
+import Toast1 from "../Toasts/Toast1";
 
 class RegisterUser extends React.Component{
     constructor(props) {
         super(props);
 
         this.state = this.initialState;
+        this.state.showUsernameWarning = false;
 
         this.onChange = this.onChange.bind(this);
         this.onSelectRoles = this.onSelectRoles.bind(this);
@@ -20,6 +22,7 @@ class RegisterUser extends React.Component{
     initialState= {
         username:'',
         password:'',
+        usernameAvailable:'',
         roles:[],
         options:[
             {value:2, label:'Leader'},
@@ -42,38 +45,69 @@ class RegisterUser extends React.Component{
 
     submitUser = async (event) => {
         event.preventDefault();
-        let modeledRoles=[];
+        await this.checkUsernameAvailability(this.state.username);
 
-        this.state.roles.map((e) => {
-            let role = { id: e}
-            modeledRoles.push(role);
-        })
-        console.log(modeledRoles);
+        if (this.state.usernameAvailable == 'available'){
 
-        let registrationRequest ={
-            username:this.state.username,
-            password: this.state.password,
-            roles:modeledRoles
+            let modeledRoles=[];
+
+            this.state.roles.map((e) => {
+                let role = { id: e}
+                modeledRoles.push(role);
+            })
+            console.log(modeledRoles);
+
+            let registrationRequest ={
+                username:this.state.username,
+                password: this.state.password,
+                roles:modeledRoles
+            }
+
+            console.log(registrationRequest);
+
+            await UserService.register(registrationRequest)
+                .then(response => response.data)
+                .then((data) => {
+                    if (data != null){
+                        alert("User Registered Successfully");
+                    }
+                    else {
+                        alert("Error in registering the user");
+                    }
+                }).catch(error => {
+                    console.log("Error in calling register");
+                    console.log("Error code : " + error);
+                });
+
+            await this.resetForm();
         }
 
-        console.log(registrationRequest);
+    }
 
-        await UserService.register(registrationRequest)
-            .then(response => response.data)
-            .then((data) => {
-                if (data != null){
-                    alert("User Registered Successfully");
-                }
-                else {
-                    alert("Error in registering the user");
-                }
-            }).catch(error => {
-                console.log("Error in calling register");
-                console.log("Error code : " + error);
-        });
+    checkUsernameAvailability = (username) =>{
+        if(this.state.username == null){
+            console.log("Username is null");
+        }
+        else{
+            UserService.isUsernameAvailable(username)
+                .then(response =>{
+                    if(response.data == true){
+                        console.log("Username is available");
+                        this.setState({usernameAvailable:'available'});
 
-        await this.resetForm();
-
+                        return true;
+                    }
+                    else{
+                        console.log("Username is taken.");
+                        this.setState({"showUsernameWarning":true});
+                        setTimeout(() => this.setState({"showUsernameWarning" : false}),3000)
+                        return  false;
+                    }
+                }).catch(error => {
+                    console.log("Error in connecting : ", error);
+            })
+        }
+        return UserService.isUsernameAvailable(username);
     }
 
     toggleShowPassword = () => {
@@ -92,6 +126,15 @@ class RegisterUser extends React.Component{
     render() {
         return (
             <div>
+
+                <div style={{"display":this.state.showUsernameWarning ? "block" :"none" }}>
+                    <Toast1
+                        children={{
+                            show:this.state.showUsernameWarning,
+                            message:"Username Already Assigned",
+                            type: 'warning',
+                        }} />
+                </div>
                 <h1>Register User</h1>
 
                 <Form onSubmit={this.submitUser}>
