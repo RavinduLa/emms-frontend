@@ -1,6 +1,7 @@
 import React from "react";
 import UserService from "../../service/UserService";
 import {Button, Card} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 class UserProfile extends React.Component{
     constructor(props) {
@@ -41,7 +42,9 @@ class UserProfile extends React.Component{
                     <Card.Header>Username : {this.state.user.username}</Card.Header>
                     {/*<Card.Body>Roles : {this.state.user.roles.map((e) => (e.name + "/"))}</Card.Body>*/}
                     <Card.Body>
-                        <Button>Change Password</Button>
+                        <Link to={'/individualUser/changePassword'} className={'btn btn-info'}>
+                            Change Password
+                        </Link>
                     </Card.Body>
                 </Card>
             </div>

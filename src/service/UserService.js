@@ -85,5 +85,14 @@ class UserService extends React.Component{
         return axios.get(BACKEND_BASE_URL + "/api/user/isUsernameAvailable/" + username, {headers: AuthHeader()});
     }
 
+    checkOldPassword(passwordCheckRequest){
+        return axios.post(BACKEND_BASE_URL + "/api/individualUser/checkOldPassword",passwordCheckRequest,
+            {headers:AuthHeader()});
+    }
+
+    individualChangePassword(resetRequest){
+        return axios.put(BACKEND_BASE_URL + "/api/individualUser/changePassword",resetRequest, {headers: AuthHeader()});
+    }
+
 }
 export default new UserService();
