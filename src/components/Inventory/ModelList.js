@@ -5,6 +5,7 @@ import {Button, Table} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
 import ModelService from "../../service/ModelService";
+import WithAuth from "../../service/WithAuth";
 
 class ModelList extends React.Component{
 
@@ -127,4 +128,4 @@ class ModelList extends React.Component{
 
 }
 
-export default ModelList;
+export default WithAuth(ModelList);

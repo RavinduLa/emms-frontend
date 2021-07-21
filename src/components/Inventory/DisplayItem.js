@@ -1,5 +1,6 @@
 import React from "react";
 import {Table} from "react-bootstrap";
+import WithAuth from "../../service/WithAuth";
 
 class DisplayItem extends React.Component{
     constructor(props) {
@@ -42,4 +43,4 @@ class DisplayItem extends React.Component{
 
 }
 
-export default DisplayItem
+export default WithAuth(DisplayItem);

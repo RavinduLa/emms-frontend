@@ -1,9 +1,9 @@
 import React from "react";
 import {Button, Col, Form} from "react-bootstrap";
-import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
 import CategoryService from "../../service/CategoryService";
+import WithAuth from "../../service/WithAuth";
 
 class AddEquipmentCategory extends React.Component{
 
@@ -191,4 +191,4 @@ class AddEquipmentCategory extends React.Component{
 
 }
 
-export default AddEquipmentCategory
+export default WithAuth(AddEquipmentCategory);

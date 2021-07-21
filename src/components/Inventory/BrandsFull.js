@@ -1,6 +1,7 @@
 import React from "react";
 import AddBrand from "./AddBrand";
 import BrandList from "./BrandList";
+import WithAuth from "../../service/WithAuth";
 
 class BrandsFull extends React.Component{
 
@@ -22,4 +23,4 @@ class BrandsFull extends React.Component{
 
 }
 
-export default BrandsFull
+export default WithAuth(BrandsFull);

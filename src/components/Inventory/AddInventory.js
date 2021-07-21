@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
-import axios from "axios";
+
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
 import DepartmentService from "../../service/DepartmentService";
@@ -9,7 +9,8 @@ import CategoryService from "../../service/CategoryService";
 import BrandService from "../../service/BrandService";
 import ModelService from "../../service/ModelService";
 import EquipmentService from "../../service/EquipmentService";
-//import async from "async";
+
+import WithAuth from "../../service/WithAuth";
 
 
 
@@ -828,4 +829,4 @@ class AddInventory extends React.Component{
     }
 
 }
-export default AddInventory;
+export default WithAuth(AddInventory);

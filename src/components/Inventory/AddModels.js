@@ -5,6 +5,7 @@ import axios from "axios";
 import Toast2 from "../Toasts/Toast2";
 import BrandService from "../../service/BrandService";
 import ModelService from "../../service/ModelService";
+import WithAuth from "../../service/WithAuth";
 
 class AddModels extends React.Component{
 
@@ -224,4 +225,4 @@ class AddModels extends React.Component{
 
 }
 
-export default AddModels;
+export default WithAuth(AddModels);

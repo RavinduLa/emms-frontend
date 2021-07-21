@@ -1,10 +1,11 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
-import axios from "axios";
+
 import {Button, Table} from "react-bootstrap";
 import Toast1 from "../Toasts/Toast1";
 import {resolveToLocation} from "react-router-dom/modules/utils/locationUtils";
 import DepartmentService from "../../service/DepartmentService";
+import WithAuth from "../../service/WithAuth";
 
 
 class Departments extends React.Component{
@@ -112,4 +113,4 @@ class Departments extends React.Component{
 
 }
 
-export default Departments
+export default WithAuth(Departments);

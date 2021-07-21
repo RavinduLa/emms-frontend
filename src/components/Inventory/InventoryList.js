@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import Toast1 from "../Toasts/Toast1";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import WithAuth from "../../service/WithAuth";
 //import { AlertWrapper } from 'react-alerts-plus';
 import Modal from "react-modal";
 import MyModal from "../Modals/MyModal";
@@ -340,4 +341,4 @@ class InventoryList extends React.Component{
     }
 }
 
-export default InventoryList
+export default WithAuth(InventoryList);

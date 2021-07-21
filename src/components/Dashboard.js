@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import {Card, Col, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import WithAuth from "../service/WithAuth";
 
 import AssetCountDepartment from "./Inventory/AssetCountDepartment";
 
@@ -109,4 +110,4 @@ class Dashboard extends React.Component{
 
 }
 
-export default Dashboard;
+export default WithAuth (Dashboard);

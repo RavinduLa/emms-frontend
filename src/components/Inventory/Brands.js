@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import WithAuth from "../../service/WithAuth";
 
 class Brands extends React.Component{
 
@@ -21,4 +22,4 @@ class Brands extends React.Component{
     }
 }
 
-export default Brands
+export default WithAuth(Brands);

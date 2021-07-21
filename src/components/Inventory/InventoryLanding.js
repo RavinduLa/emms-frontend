@@ -4,6 +4,7 @@ import InventorySearch from "./InventorySearch";
 import {Col, Row,Jumbotron} from "react-bootstrap";
 import InventorySearchSN from "./InventorySearchSN";
 import DepartmentFilter from "./DepartmentFilter"
+import WithAuth from "../../service/WithAuth";
 
 class InventoryLanding extends React.Component{
     constructor(props) {
@@ -68,4 +69,4 @@ class InventoryLanding extends React.Component{
 
 
 }
-export default InventoryLanding;
+export default WithAuth(InventoryLanding);

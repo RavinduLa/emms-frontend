@@ -4,6 +4,7 @@ import axios from "axios";
 import CategoryService from "../../service/CategoryService";
 import DepartmentService from "../../service/DepartmentService";
 import EquipmentService from "../../service/EquipmentService";
+import WithAuth from "../../service/WithAuth";
 
 class AssetCountDepartment extends React.Component{
 
@@ -254,4 +255,4 @@ class AssetCountDepartment extends React.Component{
     }
 
 }
-export default AssetCountDepartment;
+export default WithAuth(AssetCountDepartment);

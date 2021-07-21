@@ -6,6 +6,7 @@ import RejectedJobCount from "./RejectedJobCount";
 import ApprovalWaitingJobCount from "./ApprovalWaitingJobCount";
 import {Col, Row} from "react-bootstrap";
 import OnGoingJobCount from "./OnGoingJobCount";
+import WithAuth from "../service/WithAuth";
 
 class Maintenance extends React.Component{
 
@@ -59,4 +60,4 @@ class Maintenance extends React.Component{
     }
 }
 
-export default Maintenance;
+export default WithAuth(Maintenance);

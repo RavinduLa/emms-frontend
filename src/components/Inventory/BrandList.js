@@ -1,11 +1,12 @@
 import React from "react";
-import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import {Button, Table} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
 
 import BrandService from "../../service/BrandService";
+
+import WithAuth from "../../service/WithAuth";
 
 class BrandList extends React.Component{
 
@@ -128,4 +129,4 @@ class BrandList extends React.Component{
 
 }
 
-export default BrandList;
+export default WithAuth(BrandList);

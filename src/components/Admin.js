@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {Button, Card, Col, Row,Jumbotron} from "react-bootstrap";
+import WithAuth from "../service/WithAuth";
 class Admin extends React.Component{
 
     constructor(props) {
@@ -60,4 +61,4 @@ class Admin extends React.Component{
         );
     }
 }
-export default Admin
+export default WithAuth(Admin);

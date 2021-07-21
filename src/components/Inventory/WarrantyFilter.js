@@ -4,6 +4,8 @@ import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import WarrantyPresentEquipment from "./WarrantyPresentEquipment";
 import WarrantyAbsentEquipment from "./WarrantyAbsentEquipment";
 
+import WithAuth from "../../service/WithAuth";
+
 class WarrantyFilter extends React.Component{
     constructor(props) {
         super(props);
@@ -42,4 +44,4 @@ class WarrantyFilter extends React.Component{
 
 }
 
-export default WarrantyFilter;
+export default WithAuth(WarrantyFilter);

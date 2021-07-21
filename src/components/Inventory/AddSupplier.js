@@ -1,9 +1,9 @@
 import React from "react";
 import {Button, Col, Form} from "react-bootstrap";
-import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
 import SupplierService from "../../service/SupplierService";
+import WithAuth from "../../service/WithAuth";
 
 class AddSupplier extends React.Component{
     constructor(props) {
@@ -183,4 +183,4 @@ class AddSupplier extends React.Component{
 
 }
 
-export default AddSupplier
+export default WithAuth(AddSupplier);

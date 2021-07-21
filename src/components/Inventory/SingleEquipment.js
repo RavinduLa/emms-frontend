@@ -2,6 +2,7 @@ import React from "react";
 import {Button, Card, Container, Table, Col, Row} from "react-bootstrap";
 import axios from "axios";
 import {Link, Redirect} from "react-router-dom";
+import WithAuth from "../../service/WithAuth";
 
 class SingleEquipment extends React.Component{
     constructor(props) {
@@ -296,4 +297,4 @@ class SingleEquipment extends React.Component{
     }
 }
 
-export default SingleEquipment;
+export default WithAuth(SingleEquipment);

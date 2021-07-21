@@ -2,6 +2,7 @@ import React from "react";
 import EquipmentCategories from "./EquipmentCategories";
 import {Link} from "react-router-dom";
 import {Button, Card, Col, Row,Jumbotron} from "react-bootstrap";
+import WithAuth from "../../service/WithAuth";
 
 class EquipmentConfiguration extends React.Component{
 
@@ -40,4 +41,4 @@ class EquipmentConfiguration extends React.Component{
     }
 }
 
-export default EquipmentConfiguration
+export default WithAuth(EquipmentConfiguration);

@@ -5,6 +5,7 @@ import Toast1 from "../Toasts/Toast1";
 import {Link} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
 import SupplierService from "../../service/SupplierService";
+import WithAuth from "../../service/WithAuth";
 
 class SupplierList extends React.Component{
     constructor(props) {
@@ -135,4 +136,4 @@ class SupplierList extends React.Component{
 
 }
 
-export default SupplierList;
+export default WithAuth(SupplierList);

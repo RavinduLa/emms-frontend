@@ -3,6 +3,7 @@ import axios from "axios";
 import {render} from "@testing-library/react";
 import {Button, Col, Form} from "react-bootstrap";
 import Toast1 from "../Toasts/Toast1";
+import WithAuth from "../../service/WithAuth";
 
 class EditEquipment extends React.Component{
 
@@ -243,4 +244,4 @@ class EditEquipment extends React.Component{
     }
 
 }
-export default EditEquipment;
+export default WithAuth(EditEquipment);

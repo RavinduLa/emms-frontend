@@ -1,9 +1,9 @@
 import React from "react";
 import {Badge, Button, Form} from "react-bootstrap";
-import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
 import DepartmentService from "../../service/DepartmentService";
+import WithAuth from "../../service/WithAuth";
 
 class AddDepartment extends React.Component{
 
@@ -169,4 +169,4 @@ class AddDepartment extends React.Component{
 
 }
 
-export default AddDepartment
+export default WithAuth(AddDepartment);

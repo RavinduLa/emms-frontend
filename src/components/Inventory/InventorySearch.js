@@ -4,6 +4,7 @@ import axios from "axios";
 import EquipmentService from "../../service/EquipmentService";
 import DepartmentService from "../../service/DepartmentService";
 import SupplierService from "../../service/SupplierService";
+import WithAuth from "../../service/WithAuth";
 
 
 class InventorySearch extends React.Component{
@@ -258,4 +259,4 @@ class InventorySearch extends React.Component{
     }
 
 }
-export default InventorySearch;
+export default WithAuth(InventorySearch);

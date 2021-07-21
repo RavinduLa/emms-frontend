@@ -4,6 +4,7 @@ import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import EquipmentService from "../../service/EquipmentService";
 import DepartmentService from "../../service/DepartmentService";
 import SupplierService from "../../service/SupplierService";
+import WithAuth from "../../service/WithAuth";
 
 class InventorySearchSN extends React.Component{
 
@@ -254,4 +255,4 @@ class InventorySearchSN extends React.Component{
 
 }
 
-export default InventorySearchSN;
+export default WithAuth(InventorySearchSN);

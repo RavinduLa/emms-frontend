@@ -1,8 +1,8 @@
 import React from "react";
 import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
-import axios from "axios";
 import DepartmentService from "../../service/DepartmentService";
 import EquipmentService from "../../service/EquipmentService";
+import WithAuth from "../../service/WithAuth";
 
 class DepartmentFilter extends React.Component{
 
@@ -206,4 +206,4 @@ class DepartmentFilter extends React.Component{
     }
 
 }
-export default DepartmentFilter
+export default WithAuth(DepartmentFilter);

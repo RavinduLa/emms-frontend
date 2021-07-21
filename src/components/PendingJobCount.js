@@ -2,6 +2,7 @@ import React from "react";
 import {Card} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import axios from "axios";
+import WithAuth from "../service/WithAuth";
 
 class PendingJobCount extends React.Component{
 
@@ -23,7 +24,7 @@ class PendingJobCount extends React.Component{
 
             }).catch( (error) =>
         {
-            alert(error);
+            console.log(error);
         })
     }
 
@@ -49,4 +50,4 @@ class PendingJobCount extends React.Component{
 
 }
 
-export default PendingJobCount;
+export default WithAuth(PendingJobCount);

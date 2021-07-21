@@ -3,6 +3,7 @@ import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import axios from "axios";
 import SupplierService from "../../service/SupplierService";
 import EquipmentService from "../../service/EquipmentService";
+import WithAuth from "../../service/WithAuth";
 
 class SupplierFilter extends React.Component{
     constructor(props) {
@@ -180,4 +181,4 @@ class SupplierFilter extends React.Component{
     }
 
 }
-export default SupplierFilter;
+export default WithAuth(SupplierFilter);

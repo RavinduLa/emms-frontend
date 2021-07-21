@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {Button, Card, Col, Row,Jumbotron} from "react-bootstrap";
+import WithAuth from "../../service/WithAuth";
 
 class Suppliers extends React.Component{
     constructor(props) {
@@ -33,4 +34,4 @@ class Suppliers extends React.Component{
 
 }
 
-export default Suppliers
+export default WithAuth(Suppliers);

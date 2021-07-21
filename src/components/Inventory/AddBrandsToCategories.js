@@ -1,10 +1,10 @@
 import React from "react";
 import {Button, Col, Form} from "react-bootstrap";
-import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
 import BrandService from "../../service/BrandService";
 import CategoryService from "../../service/CategoryService";
+import WithAuth from "../../service/WithAuth";
 
 class AddBrandsToCategories extends React.Component{
     constructor(props) {
@@ -175,4 +175,4 @@ class AddBrandsToCategories extends React.Component{
 
 }
 
-export default AddBrandsToCategories
+export default WithAuth(AddBrandsToCategories);

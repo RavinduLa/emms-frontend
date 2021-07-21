@@ -5,6 +5,8 @@ import DepartmentFilter from "./DepartmentFilter";
 import LocationFilter from "./LocationFilter";
 import SupplierFilter from "./SupplierFilter";
 
+import WithAuth from "../../service/WithAuth";
+
 class InventoryFilter2 extends React.Component{
     constructor(props) {
         super(props);
@@ -95,4 +97,4 @@ class InventoryFilter2 extends React.Component{
     }
 
 }
-export default InventoryFilter2;
+export default WithAuth(InventoryFilter2);

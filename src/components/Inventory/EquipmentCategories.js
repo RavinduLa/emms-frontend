@@ -2,6 +2,7 @@ import React from "react";
 import {Col, Form} from "react-bootstrap";
 import AddEquipmentCategory from "./AddEquipmentCategory";
 import EquipmentCategoryList from "./EquipmentCategoryList";
+import WithAuth from "../../service/WithAuth";
 
 class EquipmentCategories extends React.Component{
 
@@ -30,4 +31,4 @@ class EquipmentCategories extends React.Component{
     }
 }
 
-export default EquipmentCategories;
+export default WithAuth(EquipmentCategories);

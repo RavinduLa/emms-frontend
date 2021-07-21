@@ -2,7 +2,7 @@ import React from "react";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
 import {Button, Col, Form, Row} from "react-bootstrap";
-import axios from "axios";
+import WithAuth from "../../service/WithAuth";
 
 import BrandService from "../../service/BrandService";
 
@@ -172,4 +172,4 @@ class AddBrand extends React.Component{
 
 }
 
-export default AddBrand
+export default WithAuth(AddBrand);

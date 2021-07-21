@@ -2,6 +2,7 @@ import React from "react";
 import InventoryList from "./InventoryList";
 import {Button, Col, Container, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import WithAuth from "../../service/WithAuth";
 
 class Inventory extends React.Component{
 
@@ -34,4 +35,4 @@ class Inventory extends React.Component{
 
 }
 
-export default Inventory;
+export default WithAuth(Inventory);

@@ -2,6 +2,7 @@ import React from "react";
 import {Card} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import axios from "axios";
+import WithAuth from "../service/WithAuth";
 
 class RejectedJobCount extends React.Component{
 
@@ -23,7 +24,7 @@ class RejectedJobCount extends React.Component{
 
             }).catch( (error) =>
         {
-            alert(error);
+            console.log(error);
         })
     }
 
@@ -49,4 +50,4 @@ class RejectedJobCount extends React.Component{
 
 }
 
-export default RejectedJobCount;
+export default WithAuth(RejectedJobCount);

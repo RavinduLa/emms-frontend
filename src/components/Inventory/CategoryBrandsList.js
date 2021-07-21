@@ -1,9 +1,9 @@
 import React from "react";
-import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import {Button, Table} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import CategoryService from "../../service/CategoryService";
+import WithAuth from "../../service/WithAuth";
 
 class CategoryBrandsList extends React.Component{
     constructor(props) {
@@ -108,4 +108,4 @@ class CategoryBrandsList extends React.Component{
 
 }
 
-export default CategoryBrandsList;
+export default WithAuth(CategoryBrandsList);

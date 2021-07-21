@@ -5,6 +5,7 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
 import CategoryService from "../../service/CategoryService";
+import WithAuth from "../../service/WithAuth";
 
 class EquipmentCategoryList extends React.Component{
 
@@ -151,4 +152,4 @@ class EquipmentCategoryList extends React.Component{
 
 }
 
-export default EquipmentCategoryList;
+export default WithAuth(EquipmentCategoryList);

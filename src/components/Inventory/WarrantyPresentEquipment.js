@@ -3,6 +3,8 @@ import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import axios from "axios";
 import EquipmentService from "../../service/EquipmentService";
 
+import WithAuth from "../../service/WithAuth";
+
 class WarrantyPresentEquipment extends React.Component{
 
     constructor(props) {
@@ -77,4 +79,4 @@ class WarrantyPresentEquipment extends React.Component{
 
 }
 
-export default WarrantyPresentEquipment;
+export default WithAuth(WarrantyPresentEquipment);
