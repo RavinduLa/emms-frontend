@@ -3,6 +3,7 @@ import axios from "axios";
 import AuthHeader from "./AuthHeader";
 
 const COMMON_URL = "/api/department/";
+const BACKEND_BASE_URL = "http://localhost:8080";
 
 class DepartmentService extends Component{
     constructor(props) {
@@ -11,23 +12,23 @@ class DepartmentService extends Component{
     }
 
     getAllDepartments(){
-        return axios.get(global.con+ COMMON_URL + "allDepartments" ,{headers:AuthHeader()});
+        return axios.get(BACKEND_BASE_URL + COMMON_URL + "allDepartments" ,{headers:AuthHeader()});
     }
 
     addDepartment(department){
-        return axios.post(global.con + COMMON_URL + "addDepartment", department , {headers:AuthHeader()});
+        return axios.post(BACKEND_BASE_URL  + COMMON_URL + "addDepartment", department , {headers:AuthHeader()});
     }
 
     getIdAvailability(did){
-        return axios.get(global.con + COMMON_URL + "getIdAvailability/" + did , {headers:AuthHeader()});
+        return axios.get(BACKEND_BASE_URL + COMMON_URL + "getIdAvailability/" + did , {headers:AuthHeader()});
     }
 
     deleteDepartment(did){
-        return axios.delete(global.con + COMMON_URL + "deleteDepartment/" + did , {headers: AuthHeader()});
+        return axios.delete(BACKEND_BASE_URL + COMMON_URL + "deleteDepartment/" + did , {headers: AuthHeader()});
     }
 
     getDepartmentNameById(did){
-        return axios.get(global.con + COMMON_URL + "getDepartmentNameById/" + did, {headers: AuthHeader()});
+        return axios.get(BACKEND_BASE_URL + COMMON_URL + "getDepartmentNameById/" + did, {headers: AuthHeader()});
     }
 
 }

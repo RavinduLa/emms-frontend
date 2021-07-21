@@ -3,6 +3,7 @@ import axios from "axios";
 import AuthHeader from "./AuthHeader";
 
 const  COMMON_URL = "/api/inventory/";
+const BACKEND_BASE_URL = "http://localhost:8080";
 
 class  ModelService extends Component{
     constructor(props) {
@@ -11,27 +12,27 @@ class  ModelService extends Component{
     }
 
     getAllModels(){
-        return axios.get(global.con + COMMON_URL + "allModels", {headers:AuthHeader()});
+        return axios.get(BACKEND_BASE_URL+ COMMON_URL + "allModels", {headers:AuthHeader()});
     }
 
     addModel(model){
-        return axios.post(global.con + COMMON_URL + "addModel", model, {headers:AuthHeader()});
+        return axios.post(BACKEND_BASE_URL + COMMON_URL + "addModel", model, {headers:AuthHeader()});
     }
 
     getModelById(id){
-        return axios.get(global.con + COMMON_URL + "getModelById/"+ id, {headers:AuthHeader()});
+        return axios.get(BACKEND_BASE_URL + COMMON_URL + "getModelById/"+ id, {headers:AuthHeader()});
     }
 
     deleteModel(id){
-        return axios.delete(global.con + COMMON_URL + "deleteModelById/" + id , {headers: AuthHeader()});
+        return axios.delete(BACKEND_BASE_URL + COMMON_URL + "deleteModelById/" + id , {headers: AuthHeader()});
     }
 
     isModelAvailable(model){
-        return axios.get(global.con + COMMON_URL + "isModelAvailable/" + model , {headers:AuthHeader()});
+        return axios.get(BACKEND_BASE_URL + COMMON_URL + "isModelAvailable/" + model , {headers:AuthHeader()});
     }
 
     getModelsForBrand(brand){
-        return axios.get(global.con + COMMON_URL + "getModelsForBrand/" + brand, {headers:AuthHeader()});
+        return axios.get(BACKEND_BASE_URL + COMMON_URL + "getModelsForBrand/" + brand, {headers:AuthHeader()});
     }
 
 }
