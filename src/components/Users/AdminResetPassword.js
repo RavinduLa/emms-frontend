@@ -1,7 +1,7 @@
 import React from "react";
 import UserService from "../../service/UserService";
 import {Button, Table} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 
 class AdminResetPassword extends React.Component{
 
@@ -11,10 +11,23 @@ class AdminResetPassword extends React.Component{
 
         this.navigateToResetPage = this.navigateToResetPage.bind(this);
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState={
-        users:[]
+        users:[],
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
@@ -37,6 +50,12 @@ class AdminResetPassword extends React.Component{
     render() {
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <h2>Reset User Passwords</h2>
                 <Table className={'table-sm'} striped bordered hover variant='light'>

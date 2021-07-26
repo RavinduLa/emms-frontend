@@ -1,9 +1,10 @@
 import React from "react";
 import Toast1 from "../Toasts/Toast1";
 import {Button, Table} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import CategoryService from "../../service/CategoryService";
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 class CategoryBrandsList extends React.Component{
     constructor(props) {
@@ -13,13 +14,26 @@ class CategoryBrandsList extends React.Component{
 
         this.deleteCombo.bind(this)
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState ={
         brandList:[],
         categoryList: [],
         comboList: [],
-        category: ''
+        category: '',
+        permission:'notPermitted',
+        currentUser:''
 
     }
 
@@ -61,6 +75,12 @@ class CategoryBrandsList extends React.Component{
     render() {
         return (
             <div>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
                 <Link to={'/addBrandsToCategories'}>Category and Brands</Link> <br/>
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>

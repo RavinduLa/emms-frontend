@@ -3,6 +3,7 @@ import UserService from "../../service/UserService";
 import {Button, Card, Form, Table} from "react-bootstrap";
 import {F} from "react-select/dist/index-4bd03571.esm";
 import Select from "react-select";
+import {Redirect} from "react-router-dom";
 
 class EditUser extends React.Component{
 
@@ -12,6 +13,17 @@ class EditUser extends React.Component{
 
         this.submitUser = this.submitUser.bind(this);
         this.onSelectRoles = this.onSelectRoles.bind(this);
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
 
     }
 
@@ -25,7 +37,9 @@ class EditUser extends React.Component{
             {value:4, label:'Viewer'},
             {value:5, label:'Editor'}
         ],
-        updatePermitted:'yes'
+        updatePermitted:'yes',
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount = async () => {
@@ -87,6 +101,12 @@ class EditUser extends React.Component{
     render() {
         return (
             <div>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
                 <div className={'container'}>
 
                     Username : {this.state.user.username}

@@ -4,6 +4,7 @@ import {Button, Table} from "react-bootstrap";
 
 import Toast1 from "../Toasts/Toast1";
 import { confirmAlert } from 'react-confirm-alert';
+import {Redirect} from "react-router-dom";
 
 class DeleteUser extends React.Component{
     constructor(props) {
@@ -15,10 +16,23 @@ class DeleteUser extends React.Component{
         this.deleteUser = this.deleteUser.bind(this);
         this.displayCancelled = this.displayCancelled.bind(this);
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState={
-        users:[]
+        users:[],
+        permission:'notPermitted',
+        currentUser:''
 
     }
 
@@ -74,6 +88,12 @@ class DeleteUser extends React.Component{
     render() {
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1

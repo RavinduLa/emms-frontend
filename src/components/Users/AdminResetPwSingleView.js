@@ -2,6 +2,7 @@ import React from "react";
 import {Button, Form} from "react-bootstrap";
 import UserService from "../../service/UserService";
 import Toast1 from "../Toasts/Toast1";
+import {Redirect} from "react-router-dom";
 
 class AdminResetPwSingleView extends React.Component{
     constructor(props) {
@@ -13,12 +14,25 @@ class AdminResetPwSingleView extends React.Component{
         this.toggleShowPassword = this.toggleShowPassword.bind(this);
         this.submitPassword = this.submitPassword.bind(this);
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState={
         id:'',
         username:'',
-        password:''
+        password:'',
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
@@ -81,6 +95,12 @@ class AdminResetPwSingleView extends React.Component{
     render() {
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1

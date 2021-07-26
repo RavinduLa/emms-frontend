@@ -1,15 +1,39 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+import UserService from "../../service/UserService";
 
 class UserPage extends React.Component{
     constructor(props) {
         super(props);
+        this.state = this.initialState;
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
+    }
+
+    initialState={
+        permission:'notPermitted',
+        currentUser:''
     }
 
     render() {
         return (
             <div>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
                 <h1>User Actions</h1>
 
                 <Link to={'/user/register'} className={'btn btn-primary'}>Add User</Link>

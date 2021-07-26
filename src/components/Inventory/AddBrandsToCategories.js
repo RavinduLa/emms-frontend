@@ -5,6 +5,8 @@ import Toast2 from "../Toasts/Toast2";
 import BrandService from "../../service/BrandService";
 import CategoryService from "../../service/CategoryService";
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class AddBrandsToCategories extends React.Component{
     constructor(props) {
@@ -16,9 +18,20 @@ class AddBrandsToCategories extends React.Component{
             brandList : [],
             categoryList: []
         }
-        this.submitCombo.bind(this)
-        this.categoryChange.bind(this)
-        this.brandChange.bind(this)
+        this.submitCombo.bind(this);
+        this.categoryChange.bind(this);
+        this.brandChange.bind(this);
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
 
     }
 
@@ -26,7 +39,9 @@ class AddBrandsToCategories extends React.Component{
         brand:'',
         categoryName:'',
         brandList:[],
-        categoryList: []
+        categoryList: [],
+        permission:'notPermitted',
+        currentUser:''
     }
     componentDidMount() {
         const URL_LOCALHOST_BRANDS = "http://localhost:8080/api/allBrands"
@@ -98,6 +113,12 @@ class AddBrandsToCategories extends React.Component{
     render() {
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1

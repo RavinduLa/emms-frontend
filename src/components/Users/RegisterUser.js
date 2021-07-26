@@ -3,6 +3,7 @@ import Select from "react-select";
 import {Button, Form} from "react-bootstrap";
 import UserService from "../../service/UserService";
 import Toast1 from "../Toasts/Toast1";
+import {Redirect} from "react-router-dom";
 
 class RegisterUser extends React.Component{
     constructor(props) {
@@ -17,6 +18,17 @@ class RegisterUser extends React.Component{
         this.toggleShowPassword = this.toggleShowPassword.bind(this);
         this.resetForm = this.resetForm.bind(this);
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState= {
@@ -29,7 +41,9 @@ class RegisterUser extends React.Component{
             {value:3, label:'Technician'},
             {value:4, label:'Viewer'},
             {value:5, label:'Editor'}
-        ]
+        ],
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
@@ -126,6 +140,12 @@ class RegisterUser extends React.Component{
     render() {
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.showUsernameWarning ? "block" :"none" }}>
                     <Toast1

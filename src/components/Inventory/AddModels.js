@@ -6,6 +6,8 @@ import Toast2 from "../Toasts/Toast2";
 import BrandService from "../../service/BrandService";
 import ModelService from "../../service/ModelService";
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class AddModels extends React.Component{
 
@@ -22,6 +24,17 @@ class AddModels extends React.Component{
         this.modelChange.bind(this)
         this.brandChange.bind(this)
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState = {
@@ -30,7 +43,9 @@ class AddModels extends React.Component{
         brand: '',
         modelAvailabilityStatus:'',
 
-        brandList: []
+        brandList: [],
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
@@ -143,6 +158,12 @@ class AddModels extends React.Component{
         }
         return (
             <div style={padding}>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1

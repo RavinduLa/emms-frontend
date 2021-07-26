@@ -1,11 +1,12 @@
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 
 import {Button, Table} from "react-bootstrap";
 import Toast1 from "../Toasts/Toast1";
 import {resolveToLocation} from "react-router-dom/modules/utils/locationUtils";
 import DepartmentService from "../../service/DepartmentService";
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 
 class Departments extends React.Component{
@@ -18,10 +19,23 @@ class Departments extends React.Component{
             did:'',
             departments: [],
         }
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
     }
     initialState = {
         did:'',
-        departments : []
+        departments : [],
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
@@ -58,6 +72,12 @@ class Departments extends React.Component{
     render() {
         return(
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1

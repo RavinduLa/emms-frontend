@@ -4,6 +4,8 @@ import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
 import CategoryService from "../../service/CategoryService";
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class AddEquipmentCategory extends React.Component{
 
@@ -22,6 +24,17 @@ class AddEquipmentCategory extends React.Component{
         this.resetCategory.bind(this)
         this.isCategoryAvailable.bind(this)
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     componentDidMount() {
@@ -32,6 +45,8 @@ class AddEquipmentCategory extends React.Component{
         nameWarningShow:'',
         categoryAvailabilityStatus: '',
         categoryName: '',
+        permission:'notPermitted',
+        currentUser:''
     }
 
 
@@ -132,6 +147,12 @@ class AddEquipmentCategory extends React.Component{
         const {categoryName} = this.state;
         return (
             <div style={padding}>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1

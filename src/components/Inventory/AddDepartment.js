@@ -4,6 +4,8 @@ import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
 import DepartmentService from "../../service/DepartmentService";
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class AddDepartment extends React.Component{
 
@@ -14,6 +16,17 @@ class AddDepartment extends React.Component{
         this.state.idWarningShow = false;
         this.submitDepartment = this.submitDepartment.bind();
         this.departmentChange = this.departmentChange.bind();
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
     }
 
     initialState = {
@@ -21,6 +34,8 @@ class AddDepartment extends React.Component{
         did:'',
         departmentName:'',
         idStatus:'',
+        permission:'notPermitted',
+        currentUser:''
 
     }
 
@@ -107,6 +122,12 @@ class AddDepartment extends React.Component{
         const {did,departmentName} = this.state;
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1

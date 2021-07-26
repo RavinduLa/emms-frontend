@@ -59,6 +59,7 @@ import AdminResetPassword from "./components/Users/AdminResetPassword";
 import AdminResetPwSingleView from "./components/Users/AdminResetPwSingleView";
 import UserProfile from "./components/Users/UserProfile";
 import ChangePassword from "./components/Users/ChangePassword";
+import NoPermissionMessage from "./components/Permission/NoPermissionMessage";
 //import SupplierList from "./components/SupplierList";
 
 function App() {
@@ -148,6 +149,7 @@ function App() {
 
           {/*Auth paths*/}
           <Route path="/login" exact component={Login}/>
+          <Route path="/no-permission" exact component={NoPermissionMessage}/>
 
           {/*User paths*/}
 

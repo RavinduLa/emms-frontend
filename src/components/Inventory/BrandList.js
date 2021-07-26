@@ -7,6 +7,7 @@ import {confirmAlert} from "react-confirm-alert";
 import BrandService from "../../service/BrandService";
 
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 class BrandList extends React.Component{
 
@@ -18,10 +19,23 @@ class BrandList extends React.Component{
         this.state={
             brands: [],
         }
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
     }
 
     initialState ={
-        brands: []
+        brands: [],
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {

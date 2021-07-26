@@ -4,6 +4,8 @@ import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
 import SupplierService from "../../service/SupplierService";
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class AddSupplier extends React.Component{
     constructor(props) {
@@ -16,6 +18,17 @@ class AddSupplier extends React.Component{
         this.resetSupplier= this.resetSupplier.bind(this)
         this.isSupplierAvailable = this.isSupplierAvailable.bind(this)
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState = {
@@ -23,7 +36,9 @@ class AddSupplier extends React.Component{
         phone: '',
         email: '',
         nameWarningShow:'',
-        supplierAvailability:''
+        supplierAvailability:'',
+        permission:'notPermitted',
+        currentUser:''
     }
 
 
@@ -115,6 +130,12 @@ class AddSupplier extends React.Component{
         }
         return (
             <div style={padding}>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1

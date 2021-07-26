@@ -2,6 +2,7 @@ import React from "react";
 import UserService from "../../service/UserService";
 import {Button, Table} from "react-bootstrap";
 import Toast1 from "../Toasts/Toast1";
+import {Redirect} from "react-router-dom";
 
 
 class ViewAllUsers extends React.Component{
@@ -17,10 +18,23 @@ class ViewAllUsers extends React.Component{
 
         console.log("Constructor running");
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState={
-        users:[]
+        users:[],
+        permission:'notPermitted',
+        currentUser:''
 
     }
 
@@ -84,6 +98,12 @@ class ViewAllUsers extends React.Component{
     render() {
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.showDisabled ? "block" :"none" }}>
                     <Toast1

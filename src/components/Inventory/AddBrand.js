@@ -5,6 +5,8 @@ import {Button, Col, Form, Row} from "react-bootstrap";
 import WithAuth from "../../service/WithAuth";
 
 import BrandService from "../../service/BrandService";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class AddBrand extends React.Component{
 
@@ -14,9 +16,20 @@ class AddBrand extends React.Component{
         this.state.show = false
         this.state.nameWarningShow = false
 
-        this.submitBrand.bind(this)
-        this.resetBrand.bind(this)
-        this.isBrandAvailable.bind(this)
+        this.submitBrand.bind(this);
+        this.resetBrand.bind(this);
+        this.isBrandAvailable.bind(this);
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
 
     }
 
@@ -27,6 +40,8 @@ class AddBrand extends React.Component{
         nameWarningShow:'',
         brandAvailabilityStatus: '',
         brandName: '',
+        permission:'notPermitted',
+        currentUser:''
 
     }
 
@@ -113,6 +128,12 @@ class AddBrand extends React.Component{
         }
         return (
             <div style={padding}>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1
