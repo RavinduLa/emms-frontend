@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Button, Container, Table} from "react-bootstrap";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import Toast1 from "../Toasts/Toast1";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -10,6 +10,7 @@ import WithAuth from "../../service/WithAuth";
 import Modal from "react-modal";
 import MyModal from "../Modals/MyModal";
 import EquipmentService from "../../service/EquipmentService";
+import UserService from "../../service/UserService";
 
 const Modal1 = (e) => {
     const [modelIsOpen, setModalIsOpen] = useState(false)
@@ -49,10 +50,32 @@ class InventoryList extends React.Component{
         this.displayCancelled = this.displayCancelled.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         //this.viewSingleItem = this.viewSingleItem.bind(this)
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        this.state.currentUser.roles.map((e) => {
+            if (e == 'LEADER'){
+                this.state.permission = 'permitted';
+            }
+            else if(e== 'VIEWER'){
+                this.state.permission = 'permitted';
+            }
+            console.log("Role : ",e);
+        });
+
+        console.log("Permission : ", this.state.permission);
     }
     initialState ={
         singleEquipment:'',
-        equipment: []
+        equipment: [],
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount =  () =>  {
@@ -227,6 +250,11 @@ class InventoryList extends React.Component{
     render() {
         return(
             <Container fluid>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
             <div>
                     <div style={{"display":this.state.show ? "block" :"none" }}>
                         <Toast1

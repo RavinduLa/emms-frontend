@@ -11,6 +11,8 @@ import ModelService from "../../service/ModelService";
 import EquipmentService from "../../service/EquipmentService";
 
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 
 
@@ -43,6 +45,26 @@ class AddInventory extends React.Component{
         this.modelChange = this.modelChange.bind(this);
         this.updateBrands = this.updateBrands.bind(this)
         this.updateModels = this.updateModels.bind(this)
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        this.state.currentUser.roles.map((e) => {
+            if (e == 'LEADER'){
+                this.state.permission = 'permitted';
+            }
+            else if(e== 'EDITOR'){
+                this.state.permission = 'permitted';
+            }
+            console.log("Role : ",e);
+        });
+
+        console.log("Permission : ", this.state.permission);
     }
 
     initialState = {
@@ -72,7 +94,10 @@ class AddInventory extends React.Component{
         filteredBrandList: [],
         filteredModelList: [],
         combinationList: [],
-        supplierList:[]
+        supplierList:[],
+
+        permission:'notPermitted',
+        currentUser:''
     }
 
     async componentDidMount () {
@@ -530,6 +555,12 @@ class AddInventory extends React.Component{
         return(
 
             <Container fluid>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
 
                 {/*<Col style={padding}>*/}
 

@@ -3,6 +3,7 @@ import UserService from "../../service/UserService";
 import {Button, Table} from "react-bootstrap";
 import Toast1 from "../Toasts/Toast1";
 import {Redirect} from "react-router-dom";
+import WithAuth from "../../service/WithAuth";
 
 
 class ViewAllUsers extends React.Component{
@@ -198,4 +199,4 @@ class ViewAllUsers extends React.Component{
 
 }
 
-export default ViewAllUsers;
+export default WithAuth(ViewAllUsers);

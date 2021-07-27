@@ -5,19 +5,45 @@ import WarrantyPresentEquipment from "./WarrantyPresentEquipment";
 import WarrantyAbsentEquipment from "./WarrantyAbsentEquipment";
 
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class WarrantyFilter extends React.Component{
     constructor(props) {
         super(props);
 
-        this.state = this.iniitialState;
+        this.state = this.initialState;
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        this.state.currentUser.roles.map((e) => {
+            if (e == 'LEADER'){
+                this.state.permission = 'permitted';
+            }
+            else if(e== 'VIEWER'){
+                this.state.permission = 'permitted';
+            }
+            console.log("Role : ",e);
+        });
+
+        console.log("Permission : ", this.state.permission);
 
     }
 
-    iniitialState={
+    initialState={
 
         equipmentUnderWarranty:[],
-        equipmentNoWarranty: []
+        equipmentNoWarranty: [],
+
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount(){
@@ -30,6 +56,12 @@ class WarrantyFilter extends React.Component{
         }
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={padding}>
                 <Row>

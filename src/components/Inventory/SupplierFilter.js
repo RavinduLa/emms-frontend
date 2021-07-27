@@ -4,6 +4,8 @@ import axios from "axios";
 import SupplierService from "../../service/SupplierService";
 import EquipmentService from "../../service/EquipmentService";
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class SupplierFilter extends React.Component{
     constructor(props) {
@@ -16,6 +18,27 @@ class SupplierFilter extends React.Component{
         this.submitSupplierFiler=this.submitSupplierFiler.bind(this);
         this.supplierFilterChange=this.supplierFilterChange.bind(this);
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        this.state.currentUser.roles.map((e) => {
+            if (e == 'LEADER'){
+                this.state.permission = 'permitted';
+            }
+            else if(e == 'VIEWER'){
+                this.state.permission = 'permitted';
+            }
+            console.log("Role : ",e);
+        });
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState={
@@ -25,7 +48,10 @@ class SupplierFilter extends React.Component{
         supplierName:'',
         selectedSupplierId:'',
         equipment:[],
-        filterInitiated:false
+        filterInitiated:false,
+
+        permission:'notPermitted',
+        currentUser:''
 
     }
     async componentDidMount(){
@@ -99,6 +125,12 @@ class SupplierFilter extends React.Component{
         }
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={padding}>
                     <Card>

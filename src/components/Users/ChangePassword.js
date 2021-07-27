@@ -3,6 +3,8 @@ import UserService from "../../service/UserService";
 import {Button, Form} from "react-bootstrap";
 import Toast1 from "../Toasts/Toast1";
 
+import WithAuth from "../../service/WithAuth";
+
 class ChangePassword extends React.Component{
     constructor(props) {
         super(props);
@@ -178,4 +180,4 @@ class ChangePassword extends React.Component{
     }
 
 }
-export default ChangePassword;
+export default WithAuth(ChangePassword);

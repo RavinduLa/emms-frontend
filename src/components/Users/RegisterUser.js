@@ -4,6 +4,7 @@ import {Button, Form} from "react-bootstrap";
 import UserService from "../../service/UserService";
 import Toast1 from "../Toasts/Toast1";
 import {Redirect} from "react-router-dom";
+import WithAuth from "../../service/WithAuth";
 
 class RegisterUser extends React.Component{
     constructor(props) {
@@ -205,4 +206,4 @@ class RegisterUser extends React.Component{
 
 }
 
-export default RegisterUser;
+export default WithAuth(RegisterUser);

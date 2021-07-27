@@ -5,6 +5,8 @@ import EquipmentService from "../../service/EquipmentService";
 import DepartmentService from "../../service/DepartmentService";
 import SupplierService from "../../service/SupplierService";
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 
 class InventorySearch extends React.Component{
@@ -16,6 +18,27 @@ class InventorySearch extends React.Component{
         this.submitSearch = this.submitSearch.bind(this);
         this.changeSearch = this.changeSearch.bind(this);
         this.resetSearch = this.resetSearch.bind(this);
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        this.state.currentUser.roles.map((e) => {
+            if (e == 'LEADER'){
+                this.state.permission = 'permitted';
+            }
+            else if(e== 'VIEWER'){
+                this.state.permission = 'permitted';
+            }
+            console.log("Role : ",e);
+        });
+
+        console.log("Permission : ", this.state.permission);
 
     }
 
@@ -37,7 +60,10 @@ class InventorySearch extends React.Component{
         warrantyMonths:'',
         type:'',
         wsId:'',
-        ipAddress:''
+        ipAddress:'',
+
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
@@ -117,6 +143,12 @@ class InventorySearch extends React.Component{
 
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
                 <div style={padding}>
 
                 <Form onReset={this.resetSearch.bind(this) } onSubmit={this.submitSearch.bind(this)} id={'searchInventoryForm'}>

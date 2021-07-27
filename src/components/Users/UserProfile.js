@@ -2,6 +2,7 @@ import React from "react";
 import UserService from "../../service/UserService";
 import {Button, Card} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import WithAuth from "../../service/WithAuth";
 
 class UserProfile extends React.Component{
     constructor(props) {
@@ -53,4 +54,4 @@ class UserProfile extends React.Component{
 
 }
 
-export default UserProfile;
+export default WithAuth(UserProfile);

@@ -3,6 +3,8 @@ import UserService from "../../service/UserService";
 import {Button, Table} from "react-bootstrap";
 import {Link, Redirect} from "react-router-dom";
 
+import WithAuth from "../../service/WithAuth";
+
 class AdminResetPassword extends React.Component{
 
     constructor(props) {
@@ -104,4 +106,4 @@ class AdminResetPassword extends React.Component{
 
 }
 
-export default AdminResetPassword;
+export default WithAuth(AdminResetPassword);

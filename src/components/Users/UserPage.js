@@ -1,6 +1,7 @@
 import React from "react";
 import {Link, Redirect} from "react-router-dom";
 import UserService from "../../service/UserService";
+import WithAuth from "../../service/WithAuth";
 
 class UserPage extends React.Component{
     constructor(props) {
@@ -47,4 +48,4 @@ class UserPage extends React.Component{
 
 }
 
-export default UserPage;
+export default WithAuth(UserPage);

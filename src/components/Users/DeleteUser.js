@@ -6,6 +6,8 @@ import Toast1 from "../Toasts/Toast1";
 import { confirmAlert } from 'react-confirm-alert';
 import {Redirect} from "react-router-dom";
 
+import WithAuth from "../../service/WithAuth";
+
 class DeleteUser extends React.Component{
     constructor(props) {
         super(props);
@@ -146,4 +148,4 @@ class DeleteUser extends React.Component{
 
 }
 
-export default DeleteUser;
+export default WithAuth(DeleteUser);

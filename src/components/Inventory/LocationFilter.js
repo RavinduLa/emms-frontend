@@ -3,6 +3,8 @@ import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import axios from "axios";
 import EquipmentService from "../../service/EquipmentService";
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class LocationFilter extends React.Component{
     constructor(props) {
@@ -14,6 +16,27 @@ class LocationFilter extends React.Component{
         this.resetLocation = this.resetLocation.bind(this);
         this.changeSearch= this.changeSearch.bind(this);
         this.alertItem = this.alertItem.bind(this);
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        this.state.currentUser.roles.map((e) => {
+            if (e == 'LEADER'){
+                this.state.permission = 'permitted';
+            }
+            else if(e== 'VIEWER'){
+                this.state.permission = 'permitted';
+            }
+            console.log("Role : ",e);
+        });
+
+        console.log("Permission : ", this.state.permission);
     }
 
     initialState={
@@ -21,7 +44,10 @@ class LocationFilter extends React.Component{
         selectedLocation:'',
         equipment:[],
         initialSearch:true,
-        itemFoundStatus:''
+        itemFoundStatus:'',
+
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount(){
@@ -71,6 +97,12 @@ class LocationFilter extends React.Component{
         }
         return (
             <div>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
                 <div style={padding}>
                     <Card>
                         <Card.Body>
