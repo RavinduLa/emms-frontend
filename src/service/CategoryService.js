@@ -3,7 +3,7 @@ import axios from "axios";
 
 import AuthHeader from "./AuthHeader";
 
-const COMMON_URL = "/api/inventory/";
+const COMMON_URL = "/api/category/";
 const BACKEND_BASE_URL = "http://localhost:8080";
 
 class CategoryService extends Component{

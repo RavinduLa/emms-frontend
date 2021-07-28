@@ -4,7 +4,7 @@ import axios from "axios";
 import AuthHeader from "./AuthHeader";
 
 //const BACKEND_COMMON_URL = global.con+"/api/inventory/";
-const COMMON_URL = "/api/inventory/";
+const COMMON_URL = "/api/brand/";
 const BACKEND_BASE_URL = "http://localhost:8080";
 
 class BrandService extends Component{
@@ -14,11 +14,11 @@ class BrandService extends Component{
     }
 
     addBrand(brand){
-        return axios.post(BACKEND_BASE_URL +"/api/inventory/"+"addBrand",brand,{headers:AuthHeader()} );
+        return axios.post(BACKEND_BASE_URL + COMMON_URL +"addBrand",brand,{headers:AuthHeader()} );
     }
 
     getAllBrands(){
-        return axios.get(BACKEND_BASE_URL +"/api/inventory/"+"allBrands", {headers:AuthHeader()} );
+        return axios.get(BACKEND_BASE_URL + COMMON_URL +"allBrands", {headers:AuthHeader()} );
     }
 
     isBrandAvailable(name){

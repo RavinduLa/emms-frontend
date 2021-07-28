@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import axios from "axios";
 import AuthHeader from "./AuthHeader";
 
-const COMMON_URL = "/api/inventory/";
+const COMMON_URL = "/api/supplier/";
 const BACKEND_BASE_URL = "http://localhost:8080";
 
 class SupplierService extends Component{
