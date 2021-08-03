@@ -3,6 +3,8 @@ import {Button, Col, Form} from "react-bootstrap";
 import Toast1 from "../Toasts/Toast1";
 import axios from "axios";
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class AddJob extends React.Component{
 
@@ -10,8 +12,31 @@ class AddJob extends React.Component{
         super(props);
         this.state= this.initialState;
         this.state.show = false;
+        this.state.permission = 'notPermitted';
+        this.state.currentUser = '';
         this.submitJob = this.submitJob.bind(this);
         this.jobChange = this.jobChange.bind(this);
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
+
+        console.log("Permission : ", this.state.permission);
     }
 
     initialState = {
@@ -67,6 +92,12 @@ class AddJob extends React.Component{
         }
         return(
             <div style={padding}>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1
