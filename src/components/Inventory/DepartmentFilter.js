@@ -4,6 +4,7 @@ import DepartmentService from "../../service/DepartmentService";
 import EquipmentService from "../../service/EquipmentService";
 import WithAuth from "../../service/WithAuth";
 import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class DepartmentFilter extends React.Component{
 
@@ -152,6 +153,12 @@ class DepartmentFilter extends React.Component{
         //console.log("In render: "+this.state.deptList)
         return (
             <div>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
                 <div style={padding}>
                     <Card >
                         <Card.Body>

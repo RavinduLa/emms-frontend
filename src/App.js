@@ -16,7 +16,7 @@ import AddInventory from "./components/Inventory/AddInventory";
 import SingleEquipment from "./components/Inventory/SingleEquipment";
 import Maintenance from "./components/Maintenance";
 import AddJob from "./components/Inventory/AddJob";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/Dashboard/Dashboard";
 import EditEquipment from "./components/Inventory/EditEquipment";
 import Departments from "./components/Inventory/Departments";
 import AddDepartment from "./components/Inventory/AddDepartment";
