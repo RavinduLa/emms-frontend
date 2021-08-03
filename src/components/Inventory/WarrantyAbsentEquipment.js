@@ -20,16 +20,20 @@ class WarrantyAbsentEquipment extends React.Component{
             console.log("User role is admin");
             this.state.permission = 'permitted';
         }
-
-        this.state.currentUser.roles.map((e) => {
-            if (e == 'LEADER'){
-                this.state.permission = 'permitted';
-            }
-            else if(e== 'VIEWER'){
-                this.state.permission = 'permitted';
-            }
-            console.log("Role : ",e);
-        });
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else if(e== 'VIEWER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
 
         console.log("Permission : ", this.state.permission);
     }
@@ -45,13 +49,16 @@ class WarrantyAbsentEquipment extends React.Component{
         const URL_EQUIPMENT = global.con+"/api/getNoWarrantyEquipment/"
 
         //await axios.get(URL_EQUIPMENT)
+        if (this.state.permission == 'permitted'){
             await EquipmentService.getNoWarrantyEquipment()
-            .then(response => response.data)
-            .then((data) => {
-                this.setState({equipment: data})
-            }).catch(error => {
-                alert("Backend server might be down: \n"+error)
-            })
+                .then(response => response.data)
+                .then((data) => {
+                    this.setState({equipment: data})
+                }).catch(error => {
+                    alert("Backend server might be down: \n"+error)
+                });
+        }
+
     }
 
     alertItem = (e) => {

@@ -20,16 +20,22 @@ class InventoryLanding extends React.Component{
             console.log("User role is admin");
             this.state.permission = 'permitted';
         }
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else if(e== 'VIEWER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
 
-        this.state.currentUser.roles.map((e) => {
-            if (e == 'LEADER'){
-                this.state.permission = 'permitted';
-            }
-            else if(e== 'VIEWER'){
-                this.state.permission = 'permitted';
-            }
-            console.log("Role : ",e);
-        });
+
 
         console.log("Permission : ", this.state.permission);
 

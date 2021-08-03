@@ -12,6 +12,8 @@ class SupplierFilter extends React.Component{
         super(props);
 
         this.state = this.initialState;
+        this.state.permission = 'notPermitted';
+        this.state.currentUser = '';
 
         this.alertItem=this.alertItem.bind(this);
         this.resetSupplierFilter=this.resetSupplierFilter.bind(this);
@@ -26,16 +28,20 @@ class SupplierFilter extends React.Component{
             console.log("User role is admin");
             this.state.permission = 'permitted';
         }
-
-        this.state.currentUser.roles.map((e) => {
-            if (e == 'LEADER'){
-                this.state.permission = 'permitted';
-            }
-            else if(e == 'VIEWER'){
-                this.state.permission = 'permitted';
-            }
-            console.log("Role : ",e);
-        });
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else if(e== 'VIEWER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
 
         console.log("Permission : ", this.state.permission);
 
@@ -59,16 +65,19 @@ class SupplierFilter extends React.Component{
         const URL_SUPPLIER = global.con+"/api/allSuppliers/";
 
         //await axios.get(URL_SUPPLIER)
-        await SupplierService.getAllSuppliers()
-            .then(response => response.data)
-            .then((data) => {
-                this.setState({supplierList: data})
-                this.setState({supplierId: data[0].supplierId})
-                this.setState({supplierName: data[0].supplierName})
-                this.setState({selectedSupplierId: data[0].supplierId})
-            }).catch(error => {
-                alert("Error: backednd servcermight be down \n"+error)
-            })
+        if (this.state.permission == 'permitted') {
+            await SupplierService.getAllSuppliers()
+                .then(response => response.data)
+                .then((data) => {
+                    this.setState({supplierList: data})
+                    this.setState({supplierId: data[0].supplierId})
+                    this.setState({supplierName: data[0].supplierName})
+                    this.setState({selectedSupplierId: data[0].supplierId})
+                }).catch(error => {
+                    alert("Error: backednd servcermight be down \n"+error)
+                });
+        }
+
 
     }
     resetSupplierFilter= async (event)=>{

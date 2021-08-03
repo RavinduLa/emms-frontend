@@ -11,6 +11,8 @@ class LocationFilter extends React.Component{
         super(props);
 
         this.state = this.initialState;
+        this.state.permission = 'notPermitted';
+        this.state.currentUser = '';
 
         this.submitLocation = this.submitLocation.bind(this);
         this.resetLocation = this.resetLocation.bind(this);
@@ -21,20 +23,25 @@ class LocationFilter extends React.Component{
         this.state.currentUser = currentUser;
 
 
+
         if (this.state.currentUser.roles == 'ADMIN'){
             console.log("User role is admin");
             this.state.permission = 'permitted';
         }
-
-        this.state.currentUser.roles.map((e) => {
-            if (e == 'LEADER'){
-                this.state.permission = 'permitted';
-            }
-            else if(e== 'VIEWER'){
-                this.state.permission = 'permitted';
-            }
-            console.log("Role : ",e);
-        });
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else if(e== 'VIEWER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
 
         console.log("Permission : ", this.state.permission);
     }
@@ -46,8 +53,6 @@ class LocationFilter extends React.Component{
         initialSearch:true,
         itemFoundStatus:'',
 
-        permission:'notPermitted',
-        currentUser:''
     }
 
     componentDidMount(){

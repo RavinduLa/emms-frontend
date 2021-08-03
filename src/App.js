@@ -137,7 +137,7 @@ function App() {
           <Route path="/addSupplier" exact component={AddSupplier} />
           <Route path="/supplierList" exact component={SupplierList}/>
           <Route path="/inventoryLanding" exact component={InventoryLanding}/>
-          <Route path="/inventoryFilter" exact component={InventoryFilter}/>
+          {/*<Route path="/inventoryFilter" exact component={InventoryFilter}/>*/}
           <Route path="/warrantyFilter" exact component={WarrantyFilter}/>
           <Route path="/departmentFilter" exact component={DepartmentFilter}/>
           <Route path="/locationFilter" exact component={LocationFilter}/>
