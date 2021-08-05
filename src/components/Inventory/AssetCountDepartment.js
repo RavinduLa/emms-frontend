@@ -1,12 +1,19 @@
 import React from "react";
 import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import axios from "axios";
+import CategoryService from "../../service/CategoryService";
+import DepartmentService from "../../service/DepartmentService";
+import EquipmentService from "../../service/EquipmentService";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 class AssetCountDepartment extends React.Component{
 
     constructor(props) {
         super(props);
         this.state = this.initialState;
+        this.state.permission = 'notPermitted';
+        this.state.currentUser = '';
 
         this.changeDept = this.changeDept.bind(this);
         this.resetDeptAssetCount = this.resetDeptAssetCount.bind(this);
@@ -14,6 +21,29 @@ class AssetCountDepartment extends React.Component{
         this.writeOutput = this.writeOutput.bind(this);
 
         //this.submitDepartmentSelection = this.submitDepartmentSelection.bind(this);
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
+
+
+
+        console.log("Permission : ", this.state.permission);
 
     }
 
@@ -36,38 +66,44 @@ class AssetCountDepartment extends React.Component{
 
         console.log("Asset count department component mounted")
 
-        await axios.get(URL_GET_ALL_TYPES)
-            .then(response => response.data)
-            .then((data) => {
-                this.setState({typeList: data})
-            }).catch(error => {
-                alert("Cannot get type list. Backend server might be down.\n"+error)
-            })
-
-        await axios.get(URL_DEPARTMENTS)
-            .then(response => response.data)
-            .then((data) => {
-                this.setState({deptList: data})
-            }).catch(error => {
-                alert("Cannot get departments: \n Backend server might be down.\n"+error)
-            })
-
-        let departmentAssetCountMap = new Map();
-        await this.state.deptList.map( (e) => (
-
-            axios.get(URL_GETEQUIPMENTCOUNT+e.did)
+        if (this.state.permission == 'permitted'){
+            //await axios.get(URL_GET_ALL_TYPES)
+            await   CategoryService.getAllCategories()
                 .then(response => response.data)
                 .then((data) => {
-                    departmentAssetCountMap.set(e.did,data);
-                    this.setState({departmentAssetCount: departmentAssetCountMap});
-                    //this.setState({departmentAssetCount: departmentAssetCountMap});
-                    //this.state.departmentAssetCount.set(e.did,data);
-                    //this.state.departmentAssetCount = departmentAssetCountMap;
-                    //console.log("inside axios: "+departmentAssetCountMap.get(1));
-                    //console.log("inside axios state v: "+this.state.departmentAssetCount.get(1));
+                    this.setState({typeList: data})
+                }).catch(error => {
+                    alert("Cannot get type list. Backend server might be down.\n"+error)
                 })
 
-        ))
+            //await axios.get(URL_DEPARTMENTS)
+            await DepartmentService.getAllDepartments()
+                .then(response => response.data)
+                .then((data) => {
+                    this.setState({deptList: data})
+                }).catch(error => {
+                    alert("Cannot get departments: \n Backend server might be down.\n"+error)
+                })
+
+            let departmentAssetCountMap = new Map();
+            await this.state.deptList.map( (e) => (
+
+                //axios.get(URL_GETEQUIPMENTCOUNT+e.did)
+                EquipmentService.getDepartmentAssetCount(e.did)
+                    .then(response => response.data)
+                    .then((data) => {
+                        departmentAssetCountMap.set(e.did,data);
+                        this.setState({departmentAssetCount: departmentAssetCountMap});
+                        //this.setState({departmentAssetCount: departmentAssetCountMap});
+                        //this.state.departmentAssetCount.set(e.did,data);
+                        //this.state.departmentAssetCount = departmentAssetCountMap;
+                        //console.log("inside axios: "+departmentAssetCountMap.get(1));
+                        //console.log("inside axios state v: "+this.state.departmentAssetCount.get(1));
+                    })
+
+            ));
+        }
+
 
         //console.log("Outside axios map: "+departmentAssetCountMap.get(1))
         //console.log("Outside axios map:"+this.state.departmentAssetCount.get(1))
@@ -83,7 +119,8 @@ class AssetCountDepartment extends React.Component{
         this.setState(() => this.initialState);
         const URL_DEPARTMENTS = global.con+"/api/allDepartments/";
 
-        await axios.generateKey(URL_DEPARTMENTS)
+        //await axios.generateKey(URL_DEPARTMENTS)
+        await DepartmentService.getAllDepartments()
             .then(response => response.data)
             .then((data) => {
                 this.setState({deptList: data})
@@ -102,7 +139,8 @@ class AssetCountDepartment extends React.Component{
         const URL_GETEQUIPMENTCOUNT = global.con+"/api/getDepartmentAssetCount/";
         console.log("Running getDepartmentAssetCount");
 
-        await axios.get(URL_GETEQUIPMENTCOUNT+id)
+        //await axios.get(URL_GETEQUIPMENTCOUNT+id)
+         await EquipmentService.getDepartmentAssetCount(id)
             .then(response => response.data)
             .then((data) => {
                 console.log("Returning data: "+data);
@@ -179,7 +217,8 @@ class AssetCountDepartment extends React.Component{
 
         const URL_GETEQUIPMENTCOUNT = global.con+"/api/getDepartmentAssetCount/";
 
-        await axios.get(URL_GETEQUIPMENTCOUNT+this.state.departmentId)
+        //await axios.get(URL_GETEQUIPMENTCOUNT+this.state.departmentId)
+        await EquipmentService.getDepartmentAssetCount(this.state.departmentId)
             .then(response => response.data)
             .then((data) => {
                 this.setState({assetCount:data})
@@ -195,7 +234,8 @@ class AssetCountDepartment extends React.Component{
             const URL_GETEQUIPMENTCOUNT = global.con+"/api/getDepartmentAssetCount/";
             console.log("Running get asset count");
 
-            await axios.get(URL_GETEQUIPMENTCOUNT+id)
+            //await axios.get(URL_GETEQUIPMENTCOUNT+id)
+            await EquipmentService.getDepartmentAssetCount(id)
                 .then(response => response.data)
                 .then((data) => {
                     console.log("Returning data: "+data);
@@ -244,4 +284,4 @@ class AssetCountDepartment extends React.Component{
     }
 
 }
-export default AssetCountDepartment;
+export default WithAuth(AssetCountDepartment);

@@ -2,7 +2,11 @@ import React from "react";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
 import {Button, Col, Form, Row} from "react-bootstrap";
-import axios from "axios";
+import WithAuth from "../../service/WithAuth";
+
+import BrandService from "../../service/BrandService";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class AddBrand extends React.Component{
 
@@ -12,9 +16,20 @@ class AddBrand extends React.Component{
         this.state.show = false
         this.state.nameWarningShow = false
 
-        this.submitBrand.bind(this)
-        this.resetBrand.bind(this)
-        this.isBrandAvailable.bind(this)
+        this.submitBrand.bind(this);
+        this.resetBrand.bind(this);
+        this.isBrandAvailable.bind(this);
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
 
     }
 
@@ -25,6 +40,8 @@ class AddBrand extends React.Component{
         nameWarningShow:'',
         brandAvailabilityStatus: '',
         brandName: '',
+        permission:'notPermitted',
+        currentUser:''
 
     }
 
@@ -42,7 +59,8 @@ class AddBrand extends React.Component{
 
         if(this.state.brandAvailabilityStatus == 'available'){
             console.log("Brand is available")
-            axios.post(URL_ADD,brand)
+            //axios.post(URL_ADD,brand)
+            BrandService.addBrand(brand)
                 .then(response => {
                     if(response.data !=  null){
                         this.resetBrand();
@@ -73,7 +91,8 @@ class AddBrand extends React.Component{
             const URL_LOCALHOST = "http://localhost:8080/api/isBrandAvailable/";
             //getting api ip address by global variable
             const URL_CHECK_AVAILABILITY = global.con + "/api/isBrandAvailable/";
-            await axios.get(URL_CHECK_AVAILABILITY+this.state.brandName)
+            //await axios.get(URL_CHECK_AVAILABILITY+this.state.brandName)
+            BrandService.isBrandAvailable(this.state.brandName)
                 .then( response => {
                     if(response.data ==  true){
                         console.log("Brand availability statue set available");
@@ -109,6 +128,12 @@ class AddBrand extends React.Component{
         }
         return (
             <div style={padding}>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1
@@ -168,4 +193,4 @@ class AddBrand extends React.Component{
 
 }
 
-export default AddBrand
+export default WithAuth(AddBrand);

@@ -1,9 +1,33 @@
 import React from "react";
 import EquipmentCategories from "./EquipmentCategories";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {Button, Card, Col, Row,Jumbotron} from "react-bootstrap";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 class EquipmentConfiguration extends React.Component{
+
+    constructor(props) {
+        super(props);
+        this.state = this.initialState;
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+    }
+
+
+    initialState={
+        permission:'notPermitted',
+        currentUser:''
+    }
 
     render() {
         const padding={
@@ -11,6 +35,11 @@ class EquipmentConfiguration extends React.Component{
         }
         return (
             <div>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
                {/* <EquipmentCategories></EquipmentCategories>*/}
                <div style={padding}>
 
@@ -40,4 +69,4 @@ class EquipmentConfiguration extends React.Component{
     }
 }
 
-export default EquipmentConfiguration
+export default WithAuth(EquipmentConfiguration);

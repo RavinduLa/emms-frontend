@@ -2,8 +2,11 @@ import React from "react";
 import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import {Button, Table} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
+import ModelService from "../../service/ModelService";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 class ModelList extends React.Component{
 
@@ -18,17 +21,31 @@ class ModelList extends React.Component{
 
         this.deleteModel.bind(this)
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState = {
-        models: []
+        models: [],
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
         const URL_LOCALHOST = "http://localhost:8080/api/allModels";
         const URL_ALL_MODELS = global.con + "/api/allModels";
 
-        axios.get(URL_ALL_MODELS)
+        //axios.get(URL_ALL_MODELS)
+        ModelService.getAllModels()
             .then(response => response.data)
             .then( (data) => {
                 this.setState( {models: data})
@@ -39,7 +56,8 @@ class ModelList extends React.Component{
         const DELETE_LOCALHOST_URL = "http://localhost:8080/api/deleteModelById/";
         const URL_DELETE_MODELS = global.con + "/api/deleteModelById/";
 
-        axios.delete(URL_DELETE_MODELS+modelId)
+        //axios.delete(URL_DELETE_MODELS+modelId)
+        ModelService.deleteModel(modelId)
             .then( response => {
                 if(response.data != null){
                     this.setState({"show":true})
@@ -78,6 +96,13 @@ class ModelList extends React.Component{
     render() {
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1
                         children={{show:this.state.show,
@@ -124,4 +149,4 @@ class ModelList extends React.Component{
 
 }
 
-export default ModelList;
+export default WithAuth(ModelList);

@@ -1,13 +1,16 @@
 import React, {useState} from "react";
 import {Button, Container, Table} from "react-bootstrap";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import Toast1 from "../Toasts/Toast1";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import WithAuth from "../../service/WithAuth";
 //import { AlertWrapper } from 'react-alerts-plus';
 import Modal from "react-modal";
 import MyModal from "../Modals/MyModal";
+import EquipmentService from "../../service/EquipmentService";
+import UserService from "../../service/UserService";
 
 const Modal1 = (e) => {
     const [modelIsOpen, setModalIsOpen] = useState(false)
@@ -34,23 +37,52 @@ class InventoryList extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = this.initialState
-        this.state.show=  false
-        this.state.modalShow = false
+        this.state = this.initialState;
+        this.state.show=  false;
+        this.state.modalShow = false;
         this.state={
             singleEquipment: '',
             equipment: [],
         }
-        this.handleClose = this.handleClose.bind(this)
-        this.handleOpen = this.handleOpen.bind(this)
+        //this.handleClose = this.handleClose.bind(this);
+        //this.handleOpen = this.handleOpen.bind(this);
+        this.deleteItem = this.deleteItem.bind(this);
+        this.displayCancelled = this.displayCancelled.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         //this.viewSingleItem = this.viewSingleItem.bind(this)
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else if(e== 'VIEWER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
+
+        console.log("Permission : ", this.state.permission);
     }
     initialState ={
         singleEquipment:'',
-        equipment: []
+        equipment: [],
+        permission:'notPermitted',
+        currentUser:''
     }
 
-    componentDidMount() {
+    componentDidMount =  () =>  {
 
         /*axios.get("http://localhost:8080/api/equipment")
             .then(response => response.data)
@@ -65,11 +97,19 @@ class InventoryList extends React.Component{
         const URL_DELETE_EQUIPMENT = global.con + "/api/deleteEquipment/";
         //const URL_GET_SUPPLIERS = global.con + "";
 
-        axios.get(URL_GET_EQUIPMENT)
+        //axios.get(URL_GET_EQUIPMENT)
+        EquipmentService.getAllEquipment()
             .then(response => response.data)
-            .then((data) => {
-                this.setState({equipment: data})
-            });
+            .then( (data) => {
+                console.log("Fetched all equipment. Setting to state");
+                this.setState({equipment: data});
+                console.log("Equipment set to state.");
+
+            }).catch(error => {
+                console.log("Equipment fetching failed with error :  " + error);
+        });
+
+        console.log("Equipment : " + this.state.equipment);
 
         /*fetch('http://localhost:8080/api/equipment')
             .then(response => response.json())
@@ -93,7 +133,8 @@ class InventoryList extends React.Component{
         const DELETE_LOCALHOST_URL = "http://localhost:8080/api/deleteEquipment/";
         const URL_DELETE = global.con + "/api/deleteEquipment/"
 
-        axios.delete(URL_DELETE+assetId)
+        //axios.delete(URL_DELETE+assetId)
+            EquipmentService.deleteEquipment(assetId)
             .then(response => {
                if(response.data != null){
                    //alert("Item deleted");
@@ -213,6 +254,11 @@ class InventoryList extends React.Component{
     render() {
         return(
             <Container fluid>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
             <div>
                     <div style={{"display":this.state.show ? "block" :"none" }}>
                         <Toast1
@@ -327,4 +373,4 @@ class InventoryList extends React.Component{
     }
 }
 
-export default InventoryList
+export default WithAuth(InventoryList);

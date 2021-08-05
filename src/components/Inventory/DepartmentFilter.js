@@ -1,6 +1,10 @@
 import React from "react";
 import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
-import axios from "axios";
+import DepartmentService from "../../service/DepartmentService";
+import EquipmentService from "../../service/EquipmentService";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class DepartmentFilter extends React.Component{
 
@@ -8,11 +12,40 @@ class DepartmentFilter extends React.Component{
         super(props);
 
         this.state = this.initialState;
+        this.state.permission = 'notPermitted';
+        this.state.currentUser = '';
 
         this.departementFilterChange= this.departementFilterChange.bind(this);
         this.resetDepartmentFilter = this.resetDepartmentFilter.bind(this);
         this.submitDepartmentFilter= this.submitDepartmentFilter.bind(this);
         this.alertItem= this.alertItem.bind(this);
+
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else if(e== 'VIEWER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
+
+
+
+        console.log("Permission : ", this.state.permission);
     }
 
     initialState = {
@@ -29,21 +62,25 @@ class DepartmentFilter extends React.Component{
 
         const URL_DEPARTMENT = global.con + "/api/allDepartments";
 
-        await axios.get(URL_DEPARTMENT)
-            .then( response => response.data)
-            .then((data) => {
+        //await axios.get(URL_DEPARTMENT)
+        if (this.state.permission == 'permitted'){
+            await DepartmentService.getAllDepartments()
+                .then( response => response.data)
+                .then((data) => {
 
-                this.setState({deptList: data});
-                this.setState({departmentId: data[0].did})
-                this.setState({departmentName: data[0].departmentName})
-                this.setState({selectedDepartmentId: data[0].did})
+                    this.setState({deptList: data});
+                    this.setState({departmentId: data[0].did})
+                    this.setState({departmentName: data[0].departmentName})
+                    this.setState({selectedDepartmentId: data[0].did})
 
-                console.log("deptList"+ this.state.deptList);
-                console.log("Department:" + this.state.departmentId + "\n"+ this.state.departmentName);
+                    console.log("deptList"+ this.state.deptList);
+                    console.log("Department:" + this.state.departmentId + "\n"+ this.state.departmentName);
 
-            }).catch(error => {
-                alert("Cannot get departments: \n Backend server might be down.")
-            })
+                }).catch(error => {
+                    alert("Cannot get departments: \n Backend server might be down.")
+                })
+        }
+
 
     }
 
@@ -52,7 +89,8 @@ class DepartmentFilter extends React.Component{
 
         const URL_DEPARTMENT = global.con + "/api/allDepartments";
 
-        await axios.get(URL_DEPARTMENT)
+        //await axios.get(URL_DEPARTMENT)
+        await DepartmentService.getAllDepartments()
             .then( response => response.data)
             .then((data) => {
 
@@ -80,7 +118,9 @@ class DepartmentFilter extends React.Component{
 
         this.setState({filterInitiated: true})
         console.log("Selected department id: " + this.state.departmentId)
-         await axios.get(URL_EQUIPMENT+this.state.departmentId)
+
+         //await axios.get(URL_EQUIPMENT+this.state.departmentId)
+            await EquipmentService.getEquipmentForDepartment(this.state.departmentId)
             .then(response => response.data)
             .then((data) => {
                 this.setState({equipment: data})
@@ -113,6 +153,12 @@ class DepartmentFilter extends React.Component{
         //console.log("In render: "+this.state.deptList)
         return (
             <div>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
                 <div style={padding}>
                     <Card >
                         <Card.Body>
@@ -200,4 +246,4 @@ class DepartmentFilter extends React.Component{
     }
 
 }
-export default DepartmentFilter
+export default WithAuth(DepartmentFilter);

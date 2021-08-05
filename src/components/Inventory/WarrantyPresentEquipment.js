@@ -1,30 +1,67 @@
 import React from "react"
 import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import axios from "axios";
+import EquipmentService from "../../service/EquipmentService";
+
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class WarrantyPresentEquipment extends React.Component{
 
     constructor(props) {
         super(props);
         this.state = this.initialState;
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else if(e== 'VIEWER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
+
+        console.log("Permission : ", this.state.permission);
     }
 
     initialState = {
 
-        equipment:[]
+        equipment:[],
+
+        permission:'notPermitted',
+        currentUser:''
 
     }
 
     async componentDidMount(){
         const URL_EQUIPMENT = global.con+"/api/getUnderWarrantyEquipment/"
 
-        await axios.get(URL_EQUIPMENT)
-            .then(response => response.data)
-            .then((data) => {
-                this.setState({equipment: data})
-            }).catch(error => {
-                alert("Backend server might be down: \n"+error)
-            })
+        //await axios.get(URL_EQUIPMENT)
+        if (this.state.permission == 'permitted') {
+            await EquipmentService.getUnderWarrantyEquipment()
+                .then(response => response.data)
+                .then((data) => {
+                    this.setState({equipment: data})
+                }).catch(error => {
+                    alert("Backend server might be down: \n" + error)
+                })
+
+        }
     }
 
     alertItem = (e) => {
@@ -38,6 +75,12 @@ class WarrantyPresentEquipment extends React.Component{
     render() {
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <h6>Equipment Under Warranty</h6>
                 <Table className={'table-sm'} striped bordered hover variant='success'>
@@ -75,4 +118,4 @@ class WarrantyPresentEquipment extends React.Component{
 
 }
 
-export default WarrantyPresentEquipment;
+export default WithAuth(WarrantyPresentEquipment);

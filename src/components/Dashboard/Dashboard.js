@@ -1,9 +1,11 @@
 import React from "react";
 import axios from "axios";
 import {Card, Col, Row} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+import WithAuth from "../../service/WithAuth";
 
-import AssetCountDepartment from "./Inventory/AssetCountDepartment";
+import AssetCountDepartment from "../Inventory/AssetCountDepartment";
+import UserService from "../../service/UserService";
 
 class Dashboard extends React.Component{
 
@@ -13,6 +15,31 @@ class Dashboard extends React.Component{
         this.state = {
             assetCount: ''
         }
+        this.state.permission = 'notPermitted';
+        this.state.currentUser = '';
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
+
+
+
+        console.log("Permission : ", this.state.permission);
 
     }
 
@@ -29,21 +56,25 @@ class Dashboard extends React.Component{
         const URL_GET_ASSET_COUNT = global.con + "/api/assetCount";
         const URL_UNDERWARRANTYASSETS  = global.con+"/api/underWarrantyCount";
         const URL_NOWARRANTYASSETS  = global.con+"/api/noWarrantyCount";
-        axios.get(URL_GET_ASSET_COUNT)
-            .then(response => response.data)
-            .then( (data)  => {
-                this.setState( {assetCount: data} );
-            } )
-        axios.get(URL_UNDERWARRANTYASSETS)
-            .then(response => response.data)
-            .then( (data) => {
-                this.setState( {underWarrantyAssetCount: data})
-            })
-        axios.get(URL_NOWARRANTYASSETS)
-            .then(response => response.data)
-            .then( (data) => {
-                this.setState( {noWarrantyAssetCount: data})
-            })
+
+        if (this.state.permission == 'permitted'){
+            axios.get(URL_GET_ASSET_COUNT)
+                .then(response => response.data)
+                .then( (data)  => {
+                    this.setState( {assetCount: data} );
+                } )
+            axios.get(URL_UNDERWARRANTYASSETS)
+                .then(response => response.data)
+                .then( (data) => {
+                    this.setState( {underWarrantyAssetCount: data})
+                })
+            axios.get(URL_NOWARRANTYASSETS)
+                .then(response => response.data)
+                .then( (data) => {
+                    this.setState( {noWarrantyAssetCount: data})
+                });
+        }
+
 
     }
 
@@ -54,6 +85,12 @@ class Dashboard extends React.Component{
         }
         return (
             <div style={padding}>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
                 <Row>
 
                     <Col>
@@ -109,4 +146,4 @@ class Dashboard extends React.Component{
 
 }
 
-export default Dashboard;
+export default WithAuth (Dashboard);

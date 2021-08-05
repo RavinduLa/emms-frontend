@@ -2,8 +2,11 @@ import React from "react";
 import Toast1 from "../Toasts/Toast1";
 import {Button, Table} from "react-bootstrap";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
+import CategoryService from "../../service/CategoryService";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 class EquipmentCategoryList extends React.Component{
 
@@ -14,18 +17,32 @@ class EquipmentCategoryList extends React.Component{
         this.state={
             categories: []
         }
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
     }
 
     initialState = {
 
-        categories : []
+        categories : [],
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
         const URL_LOCALHOST = "http://localhost:8080/api/allCategories";
         const URL_ALL_CATEGORIES = global.con + "/api/allCategories";
 
-        axios.get(URL_ALL_CATEGORIES)
+        //axios.get(URL_ALL_CATEGORIES)
+        CategoryService.getAllCategories()
             .then(response => response.data)
             .then((data) => {
                 this.setState({categories: data})
@@ -39,7 +56,8 @@ class EquipmentCategoryList extends React.Component{
         const URL_LOCALHOST = "http://localhost:8080/api/allCategories";
         const URL_ALL_CATEGORIES = global.con + "/api/allCategories";
 
-        axios.get(URL_ALL_CATEGORIES)
+        //axios.get(URL_ALL_CATEGORIES)
+        CategoryService.getAllCategories()
             .then(response => response.data)
             .then((data) => {
                 this.setState({categories: data})
@@ -53,7 +71,8 @@ class EquipmentCategoryList extends React.Component{
         const URL_LOCALHOST = "http://localhost:8080/api/deleteCategoryById/";
         const URL_DELETE_CATEGORY = global.con + "/api/deleteCategoryById/"
 
-        axios.delete(URL_DELETE_CATEGORY+categoryId)
+        //axios.delete(URL_DELETE_CATEGORY+categoryId)
+            CategoryService.deleteCategory(categoryId)
             .then(response => {
                 if(response.data != null){
                     this.setState({"show" : true})
@@ -98,6 +117,12 @@ class EquipmentCategoryList extends React.Component{
         return (
 
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <Link to={'/addEquipmentCategory'}>Add new Category</Link>
                 <div style={{"display":this.state.show ? "block" :"none" }}>
@@ -147,4 +172,4 @@ class EquipmentCategoryList extends React.Component{
 
 }
 
-export default EquipmentCategoryList;
+export default WithAuth(EquipmentCategoryList);

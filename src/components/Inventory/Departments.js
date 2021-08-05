@@ -1,9 +1,12 @@
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
-import axios from "axios";
+import {Link, Redirect} from "react-router-dom";
+
 import {Button, Table} from "react-bootstrap";
 import Toast1 from "../Toasts/Toast1";
 import {resolveToLocation} from "react-router-dom/modules/utils/locationUtils";
+import DepartmentService from "../../service/DepartmentService";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 
 class Departments extends React.Component{
@@ -16,16 +19,30 @@ class Departments extends React.Component{
             did:'',
             departments: [],
         }
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
     }
     initialState = {
         did:'',
-        departments : []
+        departments : [],
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
         const LOCALHOST_URL = "http://localhost:8080/api/allDepartments"
         const URL_VIEW_ALL_DEPARTMENTS = global.con + "/api/allDepartments"
-        axios.get(LOCALHOST_URL)
+        //axios.get(LOCALHOST_URL)
+            DepartmentService.getAllDepartments()
             .then( response => response.data)
             .then( (data)  => {
                 this.setState({departments: data})
@@ -36,7 +53,8 @@ class Departments extends React.Component{
         const URL_LOCALHOST_DELETE = "http://localhost:8080/api/deleteDepartment/";
         const URL_DELETE = global.con + "/api/deleteDepartment/"
 
-        axios.delete(URL_LOCALHOST_DELETE+did)
+        //axios.delete(URL_LOCALHOST_DELETE+did)
+            DepartmentService.deleteDepartment(did)
             .then( response => {
                 if(response.data != null){
                     this.setState({"show" : true})
@@ -54,6 +72,12 @@ class Departments extends React.Component{
     render() {
         return(
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1
@@ -109,4 +133,4 @@ class Departments extends React.Component{
 
 }
 
-export default Departments
+export default WithAuth(Departments);

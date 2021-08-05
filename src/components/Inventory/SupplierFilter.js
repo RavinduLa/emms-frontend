@@ -1,17 +1,49 @@
 import React from "react";
 import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
 import axios from "axios";
+import SupplierService from "../../service/SupplierService";
+import EquipmentService from "../../service/EquipmentService";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class SupplierFilter extends React.Component{
     constructor(props) {
         super(props);
 
         this.state = this.initialState;
+        this.state.permission = 'notPermitted';
+        this.state.currentUser = '';
 
         this.alertItem=this.alertItem.bind(this);
         this.resetSupplierFilter=this.resetSupplierFilter.bind(this);
         this.submitSupplierFiler=this.submitSupplierFiler.bind(this);
         this.supplierFilterChange=this.supplierFilterChange.bind(this);
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else if(e== 'VIEWER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
+
+        console.log("Permission : ", this.state.permission);
 
     }
 
@@ -22,30 +54,38 @@ class SupplierFilter extends React.Component{
         supplierName:'',
         selectedSupplierId:'',
         equipment:[],
-        filterInitiated:false
+        filterInitiated:false,
+
+        permission:'notPermitted',
+        currentUser:''
 
     }
     async componentDidMount(){
 
         const URL_SUPPLIER = global.con+"/api/allSuppliers/";
 
-        await axios.get(URL_SUPPLIER)
-            .then(response => response.data)
-            .then((data) => {
-                this.setState({supplierList: data})
-                this.setState({supplierId: data[0].supplierId})
-                this.setState({supplierName: data[0].supplierName})
-                this.setState({selectedSupplierId: data[0].supplierId})
-            }).catch(error => {
-                alert("Error: backednd servcermight be down \n"+error)
-            })
+        //await axios.get(URL_SUPPLIER)
+        if (this.state.permission == 'permitted') {
+            await SupplierService.getAllSuppliers()
+                .then(response => response.data)
+                .then((data) => {
+                    this.setState({supplierList: data})
+                    this.setState({supplierId: data[0].supplierId})
+                    this.setState({supplierName: data[0].supplierName})
+                    this.setState({selectedSupplierId: data[0].supplierId})
+                }).catch(error => {
+                    alert("Error: backednd servcermight be down \n"+error)
+                });
+        }
+
 
     }
     resetSupplierFilter= async (event)=>{
         this.setState( () => this.initialState);
         const URL_SUPPLIER = global.con+"/api/allSuppliers/";
 
-        await axios.get(URL_SUPPLIER)
+        //await axios.get(URL_SUPPLIER)
+        await SupplierService.getAllSuppliers()
             .then(response => response.data)
             .then((data) => {
                 this.setState({supplierList: data})
@@ -68,7 +108,8 @@ class SupplierFilter extends React.Component{
         const URL_EQUIPMENT= global.con+"/api/getEquipmentForSupplier/";
         this.setState({filterInitiated: true})
 
-        await axios.get(URL_EQUIPMENT+this.state.supplierId)
+        //await axios.get(URL_EQUIPMENT+this.state.supplierId)
+            await EquipmentService.getEquipmentForSupplier(this.state.supplierId)
             .then(response => response.data)
             .then((data) => {
                 this.setState({equipment: data})
@@ -93,6 +134,12 @@ class SupplierFilter extends React.Component{
         }
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={padding}>
                     <Card>
@@ -175,4 +222,4 @@ class SupplierFilter extends React.Component{
     }
 
 }
-export default SupplierFilter;
+export default WithAuth(SupplierFilter);

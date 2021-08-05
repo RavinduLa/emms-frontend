@@ -4,6 +4,8 @@ import {Button, Container, Table} from "react-bootstrap";
 import Toast1 from "../Toasts/Toast1";
 import {Link} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
+import SupplierService from "../../service/SupplierService";
+import WithAuth from "../../service/WithAuth";
 
 class SupplierList extends React.Component{
     constructor(props) {
@@ -25,7 +27,8 @@ class SupplierList extends React.Component{
     componentDidMount() {
 
         const URL_GET_SUPPLIERS = global.con + "/api/allSuppliers";
-        axios.get(URL_GET_SUPPLIERS)
+        //axios.get(URL_GET_SUPPLIERS)
+        SupplierService.getAllSuppliers()
             .then(response => response.data)
             .then((data) => {
                 this.setState({suppliers:data})
@@ -38,7 +41,8 @@ class SupplierList extends React.Component{
 
         const URL_DELETE_SUPPLIER = global.con + "/api/deleteSupplierById/";
 
-        axios.delete(URL_DELETE_SUPPLIER+supplierId)
+        //axios.delete(URL_DELETE_SUPPLIER+supplierId)
+        SupplierService.deleteSupplierById(supplierId)
             .then(response => {
                 if(response.data != null){
                     console.log("Deleting supplier")
@@ -86,7 +90,7 @@ class SupplierList extends React.Component{
                         <div style={{"display":this.state.show ? "block" :"none" }}>
                             <Toast1
                                 children={{show:this.state.show,
-                                    message:"Equipment deleted successfully",
+                                    message:"Supplier deleted successfully",
                                     type: 'danger'}}/>
                         </div>
 
@@ -132,4 +136,4 @@ class SupplierList extends React.Component{
 
 }
 
-export default SupplierList;
+export default WithAuth(SupplierList);

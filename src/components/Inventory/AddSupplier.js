@@ -1,8 +1,11 @@
 import React from "react";
 import {Button, Col, Form} from "react-bootstrap";
-import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
+import SupplierService from "../../service/SupplierService";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class AddSupplier extends React.Component{
     constructor(props) {
@@ -15,6 +18,17 @@ class AddSupplier extends React.Component{
         this.resetSupplier= this.resetSupplier.bind(this)
         this.isSupplierAvailable = this.isSupplierAvailable.bind(this)
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState = {
@@ -22,7 +36,9 @@ class AddSupplier extends React.Component{
         phone: '',
         email: '',
         nameWarningShow:'',
-        supplierAvailability:''
+        supplierAvailability:'',
+        permission:'notPermitted',
+        currentUser:''
     }
 
 
@@ -46,7 +62,8 @@ class AddSupplier extends React.Component{
 
         if(this.state.supplierAvailability == 'available'){
 
-            axios.post(URL_ADD_SUPPLIER,Supplier)
+            //axios.post(URL_ADD_SUPPLIER,Supplier)
+            SupplierService.addSupplier(Supplier)
                 .then( response => {
                     if(response.data != null){
                         this.resetSupplier();
@@ -76,7 +93,8 @@ class AddSupplier extends React.Component{
             const URL_CHECK_AVAILABILITY = global.con+"/api/isSupplierAvailable/";
 
 
-            axios.get(URL_CHECK_AVAILABILITY+this.state.supplierName)
+            //axios.get(URL_CHECK_AVAILABILITY+this.state.supplierName)
+            SupplierService.isSupplierAvailable(this.state.supplierName)
                 .then( response =>{
                     if(response.data == true){
                         this.state.supplierAvailability = 'available'
@@ -112,6 +130,12 @@ class AddSupplier extends React.Component{
         }
         return (
             <div style={padding}>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1
@@ -180,4 +204,4 @@ class AddSupplier extends React.Component{
 
 }
 
-export default AddSupplier
+export default WithAuth(AddSupplier);

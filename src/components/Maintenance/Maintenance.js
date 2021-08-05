@@ -1,13 +1,47 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import PendingJobCount from "./PendingJobCount";
 import CompletedJobCount from "./CompletedJobCount";
 import RejectedJobCount from "./RejectedJobCount";
 import ApprovalWaitingJobCount from "./ApprovalWaitingJobCount";
 import {Col, Row} from "react-bootstrap";
 import OnGoingJobCount from "./OnGoingJobCount";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 class Maintenance extends React.Component{
+
+    constructor(props) {
+        super(props);
+        this.state = this.initialState;
+        this.state.permission = 'notPermitted';
+        this.state.currentUser = '';
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
+
+        console.log("Permission : ", this.state.permission);
+    }
+
+    initialState={
+
+    }
 
 
     render() {
@@ -18,6 +52,11 @@ class Maintenance extends React.Component{
 
         return(
             <div>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
                 <Link to={"/addNewJob"}>Add new Job</Link>
 
                 <div style={padding}>
@@ -59,4 +98,4 @@ class Maintenance extends React.Component{
     }
 }
 
-export default Maintenance;
+export default WithAuth(Maintenance);

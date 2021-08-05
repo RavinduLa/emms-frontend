@@ -5,6 +5,10 @@ import DepartmentFilter from "./DepartmentFilter";
 import LocationFilter from "./LocationFilter";
 import SupplierFilter from "./SupplierFilter";
 
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
+
 class InventoryFilter2 extends React.Component{
     constructor(props) {
         super(props);
@@ -12,11 +16,41 @@ class InventoryFilter2 extends React.Component{
         this.state = this.initialState;
         this.resetInventoryFilter=this.resetInventoryFilter.bind(this);
         this.submitFilter=this.submitFilter.bind(this);
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+        else{
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else if(e== 'VIEWER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
+
+
+
+        console.log("Permission : ", this.state.permission);
     }
 
     initialState = {
 
-        filterOption: 'department'
+        filterOption: 'department',
+
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount(){
@@ -45,6 +79,13 @@ class InventoryFilter2 extends React.Component{
         }
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
                 <div style={padding}>
                     <Row>
                         <Col>
@@ -95,4 +136,4 @@ class InventoryFilter2 extends React.Component{
     }
 
 }
-export default InventoryFilter2;
+export default WithAuth(InventoryFilter2);

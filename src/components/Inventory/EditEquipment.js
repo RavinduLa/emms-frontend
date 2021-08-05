@@ -3,6 +3,9 @@ import axios from "axios";
 import {render} from "@testing-library/react";
 import {Button, Col, Form} from "react-bootstrap";
 import Toast1 from "../Toasts/Toast1";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class EditEquipment extends React.Component{
 
@@ -11,6 +14,16 @@ class EditEquipment extends React.Component{
         this.state = this.initialState;
         this.state.show =  false;
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
 
     }
 
@@ -33,7 +46,9 @@ class EditEquipment extends React.Component{
             purchaseDate: '',
             warrantyMonths: '',
         },
-        receivedAssetId: ''
+        receivedAssetId: '',
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
@@ -113,6 +128,12 @@ class EditEquipment extends React.Component{
 
         return(
             <div>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1
                         children={{
@@ -243,4 +264,4 @@ class EditEquipment extends React.Component{
     }
 
 }
-export default EditEquipment;
+export default WithAuth(EditEquipment);

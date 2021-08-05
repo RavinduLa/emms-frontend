@@ -14,9 +14,9 @@ import Inventory from "./components/Inventory/Inventory";
 import Header from "./components/Common/Header";
 import AddInventory from "./components/Inventory/AddInventory";
 import SingleEquipment from "./components/Inventory/SingleEquipment";
-import Maintenance from "./components/Maintenance";
-import AddJob from "./components/Inventory/AddJob";
-import Dashboard from "./components/Dashboard";
+import Maintenance from "./components/Maintenance/Maintenance";
+import AddJob from "./components/Maintenance/AddJob";
+import Dashboard from "./components/Dashboard/Dashboard";
 import EditEquipment from "./components/Inventory/EditEquipment";
 import Departments from "./components/Inventory/Departments";
 import AddDepartment from "./components/Inventory/AddDepartment";
@@ -33,7 +33,7 @@ import BrandsFull from "./components/Inventory/BrandsFull";
 import AddModels from "./components/Inventory/AddModels";
 import ModelList from "./components/Inventory/ModelList";
 import AddBrandsToCategories from "./components/Inventory/AddBrandsToCategories";
-import CategoryBrandsList from "./components/CategoryBrandsList";
+import CategoryBrandsList from "./components/Inventory/CategoryBrandsList";
 import Suppliers from "./components/Inventory/Suppliers";
 import AddSupplier from "./components/Inventory/AddSupplier";
 import IpSettings from "./components/IpSettings";
@@ -49,6 +49,17 @@ import LocationFilter from "./components/Inventory/LocationFilter";
 import InventoryFilter2 from "./components/Inventory/InventoryFilter2";
 import WarrantyPresentEquipment from "./components/Inventory/WarrantyPresentEquipment";
 import WarrantyAbsentEquipment from "./components/Inventory/WarrantyAbsentEquipment";
+import Login from "./components/Login/Login";
+import RegisterUser from "./components/Users/RegisterUser";
+import UserPage from "./components/Users/UserPage";
+import ViewAllUsers from "./components/Users/ViewAllUsers";
+import EditUser from "./components/Users/EditUser";
+import DeleteUser from "./components/Users/DeleteUser";
+import AdminResetPassword from "./components/Users/AdminResetPassword";
+import AdminResetPwSingleView from "./components/Users/AdminResetPwSingleView";
+import UserProfile from "./components/Users/UserProfile";
+import ChangePassword from "./components/Users/ChangePassword";
+import NoPermissionMessage from "./components/Permission/NoPermissionMessage";
 //import SupplierList from "./components/SupplierList";
 
 function App() {
@@ -126,7 +137,7 @@ function App() {
           <Route path="/addSupplier" exact component={AddSupplier} />
           <Route path="/supplierList" exact component={SupplierList}/>
           <Route path="/inventoryLanding" exact component={InventoryLanding}/>
-          <Route path="/inventoryFilter" exact component={InventoryFilter}/>
+          {/*<Route path="/inventoryFilter" exact component={InventoryFilter}/>*/}
           <Route path="/warrantyFilter" exact component={WarrantyFilter}/>
           <Route path="/departmentFilter" exact component={DepartmentFilter}/>
           <Route path="/locationFilter" exact component={LocationFilter}/>
@@ -135,6 +146,26 @@ function App() {
           <Route path="/warrantyPresentEquipment" exact component={WarrantyPresentEquipment}/>
           <Route path="/warrantyAbsentEquipment" exact component={WarrantyAbsentEquipment}/>
           <Route path="/supplierList" exact component={SupplierList}/>
+
+          {/*Auth paths*/}
+          <Route path="/login" exact component={Login}/>
+          <Route path="/no-permission" exact component={NoPermissionMessage}/>
+
+          {/*User paths*/}
+
+
+
+          <Route path="/user" exact component={UserPage}/>
+          <Route path="/user/register" exact component={RegisterUser}/>
+          <Route path="/user/allUsers" exact component={ViewAllUsers}/>
+          <Route path="/user/deleteUsers" exact component={DeleteUser}/>
+          <Route path="/user/resetPassword" exact component={AdminResetPassword}/>
+          <Route path="/user/resetPassword/:id" exact component={AdminResetPwSingleView}/>
+          {/*<Route path="/user/adminResetPwSingleView" exact component={AdminResetPwSingleView}/>*/}
+          <Route path="/user/:id" exact component={EditUser}/>
+
+          <Route path="/individualUser/profile" exact component={UserProfile}/>
+          <Route path="/individualUser/changePassword" exact component={ChangePassword}/>
 
           {/*<Route path="/departmentFilter" exact component={DepartmentFilter}/>*/}
         </Switch>

@@ -1,9 +1,13 @@
 import React from "react";
-import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import {Button, Table} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
+
+import BrandService from "../../service/BrandService";
+
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 class BrandList extends React.Component{
 
@@ -15,10 +19,23 @@ class BrandList extends React.Component{
         this.state={
             brands: [],
         }
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
     }
 
     initialState ={
-        brands: []
+        brands: [],
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
@@ -26,7 +43,8 @@ class BrandList extends React.Component{
         const URL_LOCALHOST = "http://localhost:8080/api/allBrands";
         const URL_VIEW_ALL_BRANDS = global.con + "/api/allBrands"
 
-        axios.get(URL_LOCALHOST)
+        //axios.get(URL_LOCALHOST)
+        BrandService.getAllBrands()
             .then(response => response.data)
             .then( (data) => {
                 this.setState( {brands : data})
@@ -39,7 +57,8 @@ class BrandList extends React.Component{
         const DELETE_LOCALHOST_URL = "http://localhost:8080/api/deleteBrand/";
         const DELETE_BRAND = global.con + "/api/deleteBrand/";
 
-        axios.delete(DELETE_BRAND+brandId)
+        //axios.delete(DELETE_BRAND+brandId)
+        BrandService.deleteBrand(brandId)
             .then(response => {
                 if(response.data != null){
                     this.setState({"show" : true})
@@ -124,4 +143,4 @@ class BrandList extends React.Component{
 
 }
 
-export default BrandList;
+export default WithAuth(BrandList);

@@ -1,8 +1,12 @@
 import React from "react";
 import {Button, Col, Form} from "react-bootstrap";
-import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
+import BrandService from "../../service/BrandService";
+import CategoryService from "../../service/CategoryService";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class AddBrandsToCategories extends React.Component{
     constructor(props) {
@@ -14,9 +18,20 @@ class AddBrandsToCategories extends React.Component{
             brandList : [],
             categoryList: []
         }
-        this.submitCombo.bind(this)
-        this.categoryChange.bind(this)
-        this.brandChange.bind(this)
+        this.submitCombo.bind(this);
+        this.categoryChange.bind(this);
+        this.brandChange.bind(this);
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
 
     }
 
@@ -24,7 +39,9 @@ class AddBrandsToCategories extends React.Component{
         brand:'',
         categoryName:'',
         brandList:[],
-        categoryList: []
+        categoryList: [],
+        permission:'notPermitted',
+        currentUser:''
     }
     componentDidMount() {
         const URL_LOCALHOST_BRANDS = "http://localhost:8080/api/allBrands"
@@ -33,7 +50,8 @@ class AddBrandsToCategories extends React.Component{
         const URL_BRANDS = global.con + "/api/allBrands";
         const URL_CATEGORIES = global.con + "/api/allCategories";
 
-        axios.get(URL_LOCALHOST_BRANDS)
+        //axios.get(URL_LOCALHOST_BRANDS)
+        BrandService.getAllBrands()
             .then( response => response.data)
             .then( (data) => {
                 this.setState({brandList: data})
@@ -42,7 +60,9 @@ class AddBrandsToCategories extends React.Component{
                 alert(error)
         })
 
-        axios.get(URL_LOCALHOST_CATEGORIES)
+
+        //axios.get(URL_LOCALHOST_CATEGORIES)
+            CategoryService.getAllCategories()
             .then( response => response.data)
             .then( (data) => {
                 this.setState({categoryList: data})
@@ -62,7 +82,8 @@ class AddBrandsToCategories extends React.Component{
 
         const LOCALHOST_URL_ADD_BRAND_TO_CATEGORY = "http://localhost:8080/api/addBrandToCategory/"
 
-        axios.post(LOCALHOST_URL_ADD_BRAND_TO_CATEGORY,combo)
+        //axios.post(LOCALHOST_URL_ADD_BRAND_TO_CATEGORY,combo)
+            CategoryService.addBrandToCategory(combo)
             .then(response => {
                 if (response.data == true){
                     this.setState({"show" : true})
@@ -92,6 +113,12 @@ class AddBrandsToCategories extends React.Component{
     render() {
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1
@@ -169,4 +196,4 @@ class AddBrandsToCategories extends React.Component{
 
 }
 
-export default AddBrandsToCategories
+export default WithAuth(AddBrandsToCategories);

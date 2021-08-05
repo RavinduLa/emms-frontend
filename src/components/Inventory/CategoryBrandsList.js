@@ -1,8 +1,10 @@
 import React from "react";
-import axios from "axios";
-import Toast1 from "./Toasts/Toast1";
+import Toast1 from "../Toasts/Toast1";
 import {Button, Table} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+import CategoryService from "../../service/CategoryService";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 class CategoryBrandsList extends React.Component{
     constructor(props) {
@@ -12,20 +14,34 @@ class CategoryBrandsList extends React.Component{
 
         this.deleteCombo.bind(this)
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState ={
         brandList:[],
         categoryList: [],
         comboList: [],
-        category: ''
+        category: '',
+        permission:'notPermitted',
+        currentUser:''
 
     }
 
     componentDidMount() {
         const LOCALHOST_URL_GET_ALL = "http://localhost:8080/api/allCategoryBrandCombinations"
         const URL_GET_ALL_COMBINATIONS = global.con + "/api/allCategoryBrandCombinations";
-        axios.get(URL_GET_ALL_COMBINATIONS)
+        //axios.get(URL_GET_ALL_COMBINATIONS)
+        CategoryService.getAllCategoryBrandCombinations()
             .then(response => response.data)
             .then( (data) => {
                 this.setState( {comboList: data}  )
@@ -40,7 +56,8 @@ class CategoryBrandsList extends React.Component{
 
         const LOCAL_HOST_URL_DELETE = "http://localhost:8080/api/deleteBrandCategoryById/"
         const URL_DELETE_COMBO = global.con + "/api/deleteBrandCategoryById/"
-        axios.delete(URL_DELETE_COMBO+id)
+        //axios.delete(URL_DELETE_COMBO+id)
+            CategoryService.deleteBrandCategory(id)
             .then(response => {
                 if(response.data != null){
                     this.setState({"show":true})
@@ -58,6 +75,12 @@ class CategoryBrandsList extends React.Component{
     render() {
         return (
             <div>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
                 <Link to={'/addBrandsToCategories'}>Category and Brands</Link> <br/>
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
@@ -105,4 +128,4 @@ class CategoryBrandsList extends React.Component{
 
 }
 
-export default CategoryBrandsList;
+export default WithAuth(CategoryBrandsList);

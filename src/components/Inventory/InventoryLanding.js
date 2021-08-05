@@ -1,14 +1,49 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import InventorySearch from "./InventorySearch";
 import {Col, Row,Jumbotron} from "react-bootstrap";
 import InventorySearchSN from "./InventorySearchSN";
 import DepartmentFilter from "./DepartmentFilter"
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 class InventoryLanding extends React.Component{
     constructor(props) {
         super(props);
+        this.state = this.initialState;
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+        else {
+            this.state.currentUser.roles.map((e) => {
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                }
+                else if(e== 'VIEWER'){
+                    this.state.permission = 'permitted';
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            });
+        }
+
+
+
+        console.log("Permission : ", this.state.permission);
+
+    }
+
+    initialState={
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
@@ -23,6 +58,13 @@ class InventoryLanding extends React.Component{
         }
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
+
                 <div style={padding2}>
 
 
@@ -68,4 +110,4 @@ class InventoryLanding extends React.Component{
 
 
 }
-export default InventoryLanding;
+export default WithAuth(InventoryLanding);

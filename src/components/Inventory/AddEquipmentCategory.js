@@ -1,8 +1,11 @@
 import React from "react";
 import {Button, Col, Form} from "react-bootstrap";
-import axios from "axios";
 import Toast1 from "../Toasts/Toast1";
 import Toast2 from "../Toasts/Toast2";
+import CategoryService from "../../service/CategoryService";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class AddEquipmentCategory extends React.Component{
 
@@ -21,6 +24,17 @@ class AddEquipmentCategory extends React.Component{
         this.resetCategory.bind(this)
         this.isCategoryAvailable.bind(this)
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     componentDidMount() {
@@ -31,6 +45,8 @@ class AddEquipmentCategory extends React.Component{
         nameWarningShow:'',
         categoryAvailabilityStatus: '',
         categoryName: '',
+        permission:'notPermitted',
+        currentUser:''
     }
 
 
@@ -54,7 +70,8 @@ class AddEquipmentCategory extends React.Component{
 
             console.log("Category is available")
 
-            axios.post(URL_ADD_CATEGORY,category)
+            //axios.post(URL_ADD_CATEGORY,category)
+                CategoryService.addCategory(category)
                 .then(  response => {
                     console.log("post in then block")
                     if(response.data != null){
@@ -89,7 +106,8 @@ class AddEquipmentCategory extends React.Component{
         else{
             const URL_LOCALHOST = "http://localhost:8080/api/isCategoryAvailable/";
             const URL_CATEGORY_AVAILABLE = global.con + "/api/isCategoryAvailable/";
-            await axios.get(URL_CATEGORY_AVAILABLE + this.state.categoryName)
+            //await axios.get(URL_CATEGORY_AVAILABLE + this.state.categoryName)
+            await CategoryService.isCategoryAvailable(this.state.categoryName)
                 .then( response => {
                     if(response.data == true){
                         console.log("Category availability status set available");
@@ -129,6 +147,12 @@ class AddEquipmentCategory extends React.Component{
         const {categoryName} = this.state;
         return (
             <div style={padding}>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1
@@ -188,4 +212,4 @@ class AddEquipmentCategory extends React.Component{
 
 }
 
-export default AddEquipmentCategory
+export default WithAuth(AddEquipmentCategory);

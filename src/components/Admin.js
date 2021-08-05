@@ -1,11 +1,36 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {Button, Card, Col, Row,Jumbotron} from "react-bootstrap";
+import WithAuth from "../service/WithAuth";
+import UserService from "../service/UserService";
 class Admin extends React.Component{
 
     constructor(props) {
         super(props);
+        this.state = this.initialState;
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
+        this.state.currentUser.roles.map((e) => {
+            console.log("Role : ",e);
+        });
+
+
+
+    }
+
+    initialState={
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
@@ -19,6 +44,11 @@ class Admin extends React.Component{
         }
         return (
             <div>
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={padding}>
                     <Jumbotron>
@@ -31,6 +61,9 @@ class Admin extends React.Component{
                             </Col>
                             <Col>
                                 <Link  className={'btn btn-warning btn-block'}to={"/departments"} >Departments</Link>
+                            </Col>
+                            <Col>
+                                <Link  className={'btn btn-warning btn-block'}to={"/user"} >Internal Users</Link>
                             </Col>
                         </Row>
 
@@ -57,4 +90,4 @@ class Admin extends React.Component{
         );
     }
 }
-export default Admin
+export default WithAuth(Admin);

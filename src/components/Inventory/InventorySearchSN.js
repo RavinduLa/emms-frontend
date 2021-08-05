@@ -1,6 +1,12 @@
 import React from "react";
 import axios from "axios";
 import {Button, Card, Col, Form, Row, Table} from "react-bootstrap";
+import EquipmentService from "../../service/EquipmentService";
+import DepartmentService from "../../service/DepartmentService";
+import SupplierService from "../../service/SupplierService";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class InventorySearchSN extends React.Component{
 
@@ -11,6 +17,27 @@ class InventorySearchSN extends React.Component{
         this.submitSearch = this.submitSearch.bind(this);
         this.changeSearch = this.changeSearch.bind(this);
         this.resetSearch = this.resetSearch.bind(this);
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        this.state.currentUser.roles.map((e) => {
+            if (e == 'LEADER'){
+                this.state.permission = 'permitted';
+            }
+            else if(e== 'VIEWER'){
+                this.state.permission = 'permitted';
+            }
+            console.log("Role : ",e);
+        });
+
+        console.log("Permission : ", this.state.permission);
     }
 
     initialState ={
@@ -31,7 +58,10 @@ class InventorySearchSN extends React.Component{
         warrantyMonths:'',
         type:'',
         wsId:'',
-        ipAddress:''
+        ipAddress:'',
+
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
@@ -53,7 +83,8 @@ class InventorySearchSN extends React.Component{
         const URL_DEPARTMENT = global.con+"/api/getDepartmentNameById/";
         const URL_SUPPLIER = global.con+"/api/getSupplierNameForId/";
         this.setState({serialNumber: event.target.value});
-        await axios.get(URL_SEARCHINVENTORY + this.state.serialNumber)
+        //await axios.get(URL_SEARCHINVENTORY + this.state.serialNumber)
+        await EquipmentService.getEquipmentForSerialNumber(this.state.serialNumber)
             .then(response => response.data)
             .then((data) => {
                 //console.log(data)
@@ -84,13 +115,15 @@ class InventorySearchSN extends React.Component{
 
             })
 
-        await axios.get(URL_DEPARTMENT + this.state.departmentId)
+        //await axios.get(URL_DEPARTMENT + this.state.departmentId)
+            await DepartmentService.getDepartmentNameById(this.state.departmentId)
             .then(response => response.data)
             .then( (data) => {
                 this.setState({departmentName: data})
             })
 
-        await axios.get(URL_SUPPLIER + this.state.supplierId)
+        //await axios.get(URL_SUPPLIER + this.state.supplierId)
+                await SupplierService.getSupplierNameForId(this.state.supplierId)
             .then(response => response.data)
             .then( (data) => {
                 this.setState({supplierName: data})
@@ -108,6 +141,12 @@ class InventorySearchSN extends React.Component{
         }
         return (
             <div>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={padding}>
 
@@ -248,4 +287,4 @@ class InventorySearchSN extends React.Component{
 
 }
 
-export default InventorySearchSN;
+export default WithAuth(InventorySearchSN);

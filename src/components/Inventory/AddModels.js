@@ -3,6 +3,11 @@ import Toast1 from "../Toasts/Toast1";
 import {Button, Col, Form} from "react-bootstrap";
 import axios from "axios";
 import Toast2 from "../Toasts/Toast2";
+import BrandService from "../../service/BrandService";
+import ModelService from "../../service/ModelService";
+import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
+import {Redirect} from "react-router-dom";
 
 class AddModels extends React.Component{
 
@@ -19,6 +24,17 @@ class AddModels extends React.Component{
         this.modelChange.bind(this)
         this.brandChange.bind(this)
 
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        console.log("Permission : ", this.state.permission);
+
     }
 
     initialState = {
@@ -27,13 +43,16 @@ class AddModels extends React.Component{
         brand: '',
         modelAvailabilityStatus:'',
 
-        brandList: []
+        brandList: [],
+        permission:'notPermitted',
+        currentUser:''
     }
 
     componentDidMount() {
         const LOCAL_HOST_URL = "http://localhost:8080/api/allBrands";
         const URL_ALL_BRANDS = global.con + "/api/allBrands"
-        axios.get(LOCAL_HOST_URL)
+        //axios.get(LOCAL_HOST_URL)
+            BrandService.getAllBrands()
             .then(response => response.data)
             .then((data) => {
                 this.setState({brandList: data})
@@ -58,7 +77,8 @@ class AddModels extends React.Component{
         this.isModelAvailable();
         if(this.state.modelAvailabilityStatus == 'available'){
             console.log("Model details" + model.modelId+ model.model)
-            axios.post(URL_ADD_MODELS, model)
+            //axios.post(URL_ADD_MODELS, model)
+                ModelService.addModel(model)
                 .then(response => {
                     if (response.data != null){
                         this.setState({"show" : true})
@@ -86,7 +106,8 @@ class AddModels extends React.Component{
         else{
             const URL_LOCALHOST = "http://localhost:8080/api/isModelAvailable/";
             const URL_CHECK_MODEL_AVAILABILITY =global.con + "/api/isModelAvailable/";
-            axios.get(URL_CHECK_MODEL_AVAILABILITY+this.state.model)
+            //axios.get(URL_CHECK_MODEL_AVAILABILITY+this.state.model)
+            ModelService.isModelAvailable(this.state.model)
                 .then( response => {
                     if(response.data == true){
                         this.state.modelAvailabilityStatus = 'available'
@@ -110,7 +131,8 @@ class AddModels extends React.Component{
         this.setState( () => this.initialState);
         const LOCAL_HOST_URL = "http://localhost:8080/api/allBrands";
         const URL_ALL_BRANDS = global.con + "/api/allBrands";
-        axios.get(URL_ALL_BRANDS)
+        //axios.get(URL_ALL_BRANDS)
+        BrandService.getAllBrands()
             .then( response => response.data)
             .then((data) => {
                 this.setState({brandList: data})
@@ -136,6 +158,12 @@ class AddModels extends React.Component{
         }
         return (
             <div style={padding}>
+
+                {
+                    this.state.permission === 'notPermitted'?
+                        <Redirect to={'/no-permission'} />:
+                        <div></div>
+                }
 
                 <div style={{"display":this.state.show ? "block" :"none" }}>
                     <Toast1
@@ -218,4 +246,4 @@ class AddModels extends React.Component{
 
 }
 
-export default AddModels;
+export default WithAuth(AddModels);
