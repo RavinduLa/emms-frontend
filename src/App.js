@@ -60,6 +60,11 @@ import AdminResetPwSingleView from "./components/Users/AdminResetPwSingleView";
 import UserProfile from "./components/Users/UserProfile";
 import ChangePassword from "./components/Users/ChangePassword";
 import NoPermissionMessage from "./components/Permission/NoPermissionMessage";
+import EquipmentCondemnLanding from "./components/Inventory/EquipmentCondemn/EquipmentCondemnLanding";
+import EquipmentCondemnRequest from "./components/Inventory/EquipmentCondemn/EquipmentCondemnRequest";
+import EquipmentCondemnRequestSW from "./components/Inventory/EquipmentCondemn/EquipmentCondemnRequestSW";
+import PendingCondemnEquipmentList from "./components/Inventory/EquipmentCondemn/PendingCondemnEquipmentList";
+import CondemnedEquipmentList from "./components/Inventory/EquipmentCondemn/CondemnedEquipmentList";
 //import SupplierList from "./components/SupplierList";
 
 function App() {
@@ -147,6 +152,13 @@ function App() {
           <Route path="/warrantyAbsentEquipment" exact component={WarrantyAbsentEquipment}/>
           <Route path="/supplierList" exact component={SupplierList}/>
 
+          <Route path="/inventory/condemnLanding" exact component={EquipmentCondemnLanding}/>
+          <Route path="/inventory/condemnRequest" exact component={EquipmentCondemnRequest}/>
+          <Route path="/inventory/condemnPendingEquipment" exact component={PendingCondemnEquipmentList}/>
+          <Route path="/inventory/condemnedEquipment" exact component={CondemnedEquipmentList}/>
+          <Route path="/inventory/condemnRequestSW/:id" exact component={EquipmentCondemnRequestSW}/>
+
+
           {/*Auth paths*/}
           <Route path="/login" exact component={Login}/>
           <Route path="/no-permission" exact component={NoPermissionMessage}/>
@@ -166,6 +178,8 @@ function App() {
 
           <Route path="/individualUser/profile" exact component={UserProfile}/>
           <Route path="/individualUser/changePassword" exact component={ChangePassword}/>
+
+
 
           {/*<Route path="/departmentFilter" exact component={DepartmentFilter}/>*/}
         </Switch>

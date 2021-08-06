@@ -110,6 +110,36 @@ class EquipmentService extends Component{
         return axios.get(BACKEND_BASE_URL + COMMON_URL + "getNoWarrantyEquipment" , {headers:AuthHeader()});
     }
 
+    requestEquipmentCondemn(condemnRequest){
+        return axios.post(BACKEND_BASE_URL + COMMON_URL + "requestEquipmentCondemn",condemnRequest ,
+            {headers:AuthHeader()});
+    }
+
+    cancelCondemnRequest(assetId){
+        return axios.delete(BACKEND_BASE_URL + COMMON_URL + "cancelCondemnRequest/" + assetId, { headers: AuthHeader()});
+    }
+
+    performCondemn(assetId){
+        return axios.get(BACKEND_BASE_URL + COMMON_URL + "performCondemn/" + assetId, {headers : AuthHeader()});
+    }
+
+    isEquipmentCondemnPending(assetId){
+        return axios.get(BACKEND_BASE_URL + COMMON_URL + "isEquipmentCondemnPending/" + assetId,
+            {headers : AuthHeader()});
+    }
+
+    isEquipmentCondemned(assetId){
+        return axios.get(BACKEND_BASE_URL + COMMON_URL +"isEquipmentCondemned/" + assetId, {headers: AuthHeader()});
+    }
+
+    getPendingCondemnEquipment(){
+        return axios.get(BACKEND_BASE_URL + COMMON_URL + "getPendingCondemnEquipment", {headers : AuthHeader()});
+    }
+
+    getAllCondemnedEquipment(){
+        return axios.get(BACKEND_BASE_URL + COMMON_URL + "getAllCondemnedEquipment", {headers : AuthHeader()});
+    }
+
 }
 
 export default new EquipmentService();

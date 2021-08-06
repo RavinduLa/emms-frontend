@@ -2,6 +2,7 @@ import React from "react";
 import {Link, Redirect} from "react-router-dom";
 import UserService from "../../service/UserService";
 import WithAuth from "../../service/WithAuth";
+import {Col, Jumbotron, Row} from "react-bootstrap";
 
 class UserPage extends React.Component{
     constructor(props) {
@@ -27,8 +28,11 @@ class UserPage extends React.Component{
     }
 
     render() {
+        const padding={
+            padding:'20px'
+        }
         return (
-            <div>
+            <div style={padding}>
                 {
                     this.state.permission === 'notPermitted'?
                         <Redirect to={'/no-permission'} />:
@@ -37,10 +41,19 @@ class UserPage extends React.Component{
 
                 <h1>User Actions</h1>
 
-                <Link to={'/user/register'} className={'btn btn-primary'}>Add User</Link>
-                <Link to={'/user/allUsers'} className={'btn btn-secondary'}>View All Users</Link>
-                <Link to={'/user/deleteUsers'} className={'btn btn-danger'}>Delete Users</Link>
-                <Link to={'/user/resetPassword'} className={'btn btn-secondary'}>Reset Passwords</Link>
+                <Jumbotron>
+                    <Row>
+                        <Col><Link to={'/user/register'} className={'btn btn-primary btn-block'}>Add User</Link></Col>
+                        <Col><Link to={'/user/allUsers'} className={'btn btn-secondary btn-block'}>View All Users</Link></Col>
+                        <Col><Link to={'/user/deleteUsers'} className={'btn btn-danger btn-block'}>Delete Users</Link></Col>
+                        <Col><Link to={'/user/resetPassword'} className={'btn btn-secondary btn-block'}>Reset Passwords</Link></Col>
+                    </Row>
+                </Jumbotron>
+
+
+
+
+
 
             </div>
         );
