@@ -65,6 +65,7 @@ import EquipmentCondemnRequest from "./components/Inventory/EquipmentCondemn/Equ
 import EquipmentCondemnRequestSW from "./components/Inventory/EquipmentCondemn/EquipmentCondemnRequestSW";
 import PendingCondemnEquipmentList from "./components/Inventory/EquipmentCondemn/PendingCondemnEquipmentList";
 import CondemnedEquipmentList from "./components/Inventory/EquipmentCondemn/CondemnedEquipmentList";
+import LeaderPage from "./components/Leader/LeaderPage";
 //import SupplierList from "./components/SupplierList";
 
 function App() {
@@ -151,6 +152,7 @@ function App() {
           <Route path="/warrantyPresentEquipment" exact component={WarrantyPresentEquipment}/>
           <Route path="/warrantyAbsentEquipment" exact component={WarrantyAbsentEquipment}/>
           <Route path="/supplierList" exact component={SupplierList}/>
+          <Route path="/leaderPage" exact component={LeaderPage}/>
 
           <Route path="/inventory/condemnLanding" exact component={EquipmentCondemnLanding}/>
           <Route path="/inventory/condemnRequest" exact component={EquipmentCondemnRequest}/>
