@@ -103,8 +103,11 @@ class AdminResetPwSingleView extends React.Component{
     }
 
     render() {
+        const padding={
+            padding:'20px'
+        }
         return (
-            <div>
+            <div style={padding}>
 
                 {
                     this.state.permission === 'notPermitted'?

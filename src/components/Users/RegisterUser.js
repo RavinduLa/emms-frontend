@@ -139,8 +139,11 @@ class RegisterUser extends React.Component{
     }
 
     render() {
+        const padding={
+            padding:'20px'
+        }
         return (
-            <div>
+            <div style={padding}>
 
                 {
                     this.state.permission === 'notPermitted'?
@@ -188,6 +191,7 @@ class RegisterUser extends React.Component{
                         <Form.Check type={'checkbox'} label={'Show Password'} onClick={this.toggleShowPassword} />
                     </Form.Group>
 
+                    Role:
                     <Select
                         options = {this.state.options}
                         className={'basic-multi-select'}

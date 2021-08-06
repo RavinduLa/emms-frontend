@@ -126,12 +126,13 @@ class EditUser extends React.Component{
 
                 <div className={'container'}>
 
-                    Username : {this.state.user.username}
+                    <h2>Username : {this.state.user.username} </h2>
 
 
 
                     <Form onSubmit={this.submitUser}>
 
+                        Select Roles:
                         <Select
                             options = {this.state.options}
                             className={'basic-multi-select'}
