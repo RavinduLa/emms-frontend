@@ -6,13 +6,28 @@ import {Link} from "react-router-dom";
 import {confirmAlert} from "react-confirm-alert";
 import SupplierService from "../../service/SupplierService";
 import WithAuth from "../../service/WithAuth";
+import UserService from "../../service/UserService";
 
 class SupplierList extends React.Component{
     constructor(props) {
         super(props);
         this.state = this.initialState;
-        this.state.show=  false
-        this.state.modalShow = false
+        this.state.show=  false;
+        this.state.modalShow = false;
+        this.state.permission = 'notPermitted';
+        this.state.currentUser = '';
+
+        const currentUser = UserService.getCurrentUser();
+        this.state.currentUser = currentUser;
+
+        if (this.state.currentUser.roles == 'ADMIN'){
+            console.log("User role is admin");
+            this.state.permission = 'permitted';
+        }
+
+        else {
+            this.state.permission = 'notPermitted';
+        }
 
         this.state={
             suppliers: [],

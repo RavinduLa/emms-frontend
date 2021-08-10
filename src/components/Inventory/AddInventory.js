@@ -14,6 +14,7 @@ import WithAuth from "../../service/WithAuth";
 import UserService from "../../service/UserService";
 import {Redirect} from "react-router-dom";
 import AddInventoryService from "../../service/AddInventoryService";
+import {forEach} from "react-bootstrap/ElementChildren";
 
 
 
@@ -57,7 +58,8 @@ class AddInventory extends React.Component{
             this.state.permission = 'permitted';
         }
         else {
-            this.state.currentUser.roles.map((e) => {
+
+            /*this.state.currentUser.roles.map((e) => {
                 if (e == 'LEADER'){
                     this.state.permission = 'permitted';
                 }
@@ -68,8 +70,26 @@ class AddInventory extends React.Component{
                     this.state.permission = 'notPermitted';
                 }
                 console.log("Role : ",e);
-            });
+            });*/
+
+            //let rolesArray = this.state.currentUser.roles;
+            this.state.currentUser.roles.some( (e) =>{
+                if (e == 'LEADER'){
+                    this.state.permission = 'permitted';
+                    return true;
+                }
+                else if(e== 'EDITOR'){
+                    this.state.permission = 'permitted';
+                    return true;
+                }
+                else {
+                    this.state.permission = 'notPermitted';
+                }
+                console.log("Role : ",e);
+            })
         }
+
+
 
 
 

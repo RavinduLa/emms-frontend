@@ -19,9 +19,10 @@ class LeaderPage extends React.Component{
             this.state.permission = 'permitted';
         }
         else {
-            this.state.currentUser.roles.map((e) => {
+            this.state.currentUser.roles.some((e) => {
                 if (e == 'LEADER'){
                     this.state.permission = 'permitted';
+                    return true;
                 }
                 else {
                     this.state.permission = 'notPermitted';

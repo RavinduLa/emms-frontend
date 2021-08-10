@@ -28,12 +28,14 @@ class InventorySearch extends React.Component{
             this.state.permission = 'permitted';
         }
 
-        this.state.currentUser.roles.map((e) => {
+        this.state.currentUser.roles.some((e) => {
             if (e == 'LEADER'){
                 this.state.permission = 'permitted';
+                return true;
             }
             else if(e== 'VIEWER'){
                 this.state.permission = 'permitted';
+                return true;
             }
             console.log("Role : ",e);
         });
