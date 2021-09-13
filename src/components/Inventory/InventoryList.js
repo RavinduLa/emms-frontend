@@ -351,13 +351,13 @@ class InventoryList extends React.Component{
                                             </Link>
                                         </td>*/}
 
-                                        <td>
+                                        {/*<td>
 
                                             <Button
                                                 //onClick={this.deleteItem.bind(this,e.assetId)}
                                                 onClick={this.handleDelete.bind(this,e.assetId)}
                                                 className={'btn btn-danger btn-sm'}>Delete</Button>
-                                        </td>
+                                        </td>*/}
 
                                     </tr>
                                 )
