@@ -246,7 +246,7 @@ class AssetCountDepartment extends React.Component{
         return (
             <div>
                 <div>
-                    Third time's the charm....
+
                     <Table>
                         <thead>
                         <tr>

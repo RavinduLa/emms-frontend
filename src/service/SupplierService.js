@@ -2,8 +2,12 @@ import React, {Component} from "react";
 import axios from "axios";
 import AuthHeader from "./AuthHeader";
 
+import connection from "./connection.json";
+
+const BACKEND_BASE_URL = "http://" + connection.ipAddress + ":" + connection.port;
+
 const COMMON_URL = "/api/supplier/";
-const BACKEND_BASE_URL = "http://localhost:8080";
+//const BACKEND_BASE_URL = "http://localhost:8080";
 
 class SupplierService extends Component{
     constructor(props) {

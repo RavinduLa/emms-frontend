@@ -2,8 +2,11 @@ import React, {Component} from "react";
 import axios from "axios";
 import AuthHeader from "./AuthHeader";
 
+import connection from "./connection.json";
+
 const  COMMON_URL = "/api/model/";
-const BACKEND_BASE_URL = "http://localhost:8080";
+//const BACKEND_BASE_URL = "http://localhost:8080";
+const BACKEND_BASE_URL = "http://" + connection.ipAddress + ":" + connection.port;
 
 class  ModelService extends Component{
     constructor(props) {

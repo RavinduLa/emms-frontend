@@ -3,9 +3,13 @@ import axios from "axios";
 
 import AuthHeader from "./AuthHeader";
 
+import connection from "./connection.json";
+
+const BACKEND_BASE_URL = "http://" + connection.ipAddress + ":" + connection.port;
+
 //const BACKEND_COMMON_URL = global.con+"/api/inventory/";
 const COMMON_URL = "/api/brand/";
-const BACKEND_BASE_URL = "http://localhost:8080";
+//const BACKEND_BASE_URL = "http://localhost:8080";
 
 class BrandService extends Component{
     constructor(props) {

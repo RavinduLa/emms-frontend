@@ -2,7 +2,10 @@ import React, {Component} from "react";
 import axios from "axios";
 import AuthHeader from "./AuthHeader";
 
-const BACKEND_BASE_URL = "http://localhost:8080";
+import connection from "./connection.json";
+
+//const BACKEND_BASE_URL = "http://localhost:8080";
+const BACKEND_BASE_URL = "http://" + connection.ipAddress + ":" + connection.port;
 const COMMON_URL = "/api/addInventory/";
 
 class AddInventoryService extends Component{
